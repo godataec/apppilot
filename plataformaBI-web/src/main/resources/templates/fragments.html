@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"/></head>
+<body>
+
+<th:block th:fragment="dynTableBody(table)">
+    <tbody>
+    <tr th:each="rowKey : ${table.rowKeys}">
+        <td th:each="col : ${table.columns}"
+            th:text="${col.rows[rowKey]} ?: ''">—</td>
+    </tr>
+    </tbody>
+</th:block>
+
+</body>
+</html>

@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FI PI Proposal Form</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0.5cm;
+            font-family: "Calibri Bold", Calibri, serif;
+        }
+
+        /* Running header element */
+        #running-header {
+            -fs-move-to-flow: header-flow;
+            text-align: right;
+        }
+
+        #running-header img {
+            width: 4.17cm;
+            display: inline-block;
+        }
+
+
+        @page content-page {
+            size: A4;
+            margin: 3cm 2cm 3cm 2cm;
+            /* Extra top margin for header, extra bottom for footer */
+
+            @top-center {
+                content: -fs-flow(header-flow);
+                vertical-align: right;
+                padding-left: 13cm;
+            }
+
+        }
+
+        .cover {
+            height: 22.2cm;
+            box-sizing: border-box;
+            position: relative;
+            padding-top: 2.3cm;
+        }
+
+        .content {
+            page: content-page;
+            width: 95%;
+        }
+
+        .tbody {
+            width: 95%;
+        }
+
+        .question {
+            margin-bottom: 9pt;
+            page-break-inside: avoid;
+        }
+
+        .question p {
+            margin: 0 0 4.5pt 0;
+        }
+
+        .question span span.es {
+            font-weight: bold;
+
+        }
+
+        .question span span.en {
+            font-style: italic;
+            margin-bottom: 9pt;
+        }
+
+        .question p span.es {
+            font-weight: inline;
+
+        }
+
+        .question p span.en {
+            font-style: italic;
+            margin-bottom: 9pt;
+        }
+
+        .section-title {
+            font-size: 20pt;
+            margin-top: 35pt;
+            margin-bottom: 27pt;
+            letter-spacing: -0.5pt;
+        }
+
+        .strong {
+            font-weight: bold;
+        }
+
+        i {
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #000;
+        }
+
+        th,
+        td {
+            padding: 6px 8px;
+            text-align: left;
+            font-size: 10pt;
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        /* checkbox style*/
+        .checkbox {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #000;
+            display: inline-block;
+            justify-content: center;
+            align-items: center;
+            line-height: 14px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-sizing: border-box;
+        }
+
+        .checkboxmark {
+            padding-left: 2px;
+        }
+
+
+        ul {
+            margin: 10px 0;
+            padding-left: 0.5cm;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        .title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* New table-based question layout */
+        .question-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 0 4.5pt 0;
+            border: none;
+        }
+
+        .question-table td {
+            border: none;
+            padding: 0;
+            vertical-align: top;
+        }
+
+        .question-number {
+            font-weight: bold;
+            width: 2em;
+            text-align: left;
+            padding-right: 0.5em;
+        }
+
+        .question-content {
+            width: calc(100% - 2em);
+        }
+
+
+        #tablaSubsidiarias {
+            width: 95%;
+            border-collapse: collapse;
+        }
+
+        .table {
+            width: 95%;
+            border-collapse: collapse;
+
+        }
+
+        #tablaSubsidiarias td {
+            border: 1px solid #000;
+            padding: 0.8em;
+            height: 2.5em;
+        }
+
+        #tablaSubsidiarias th {
+            text-align: center;
+        }
+
+        .sub-question-text-wrapper-a {
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+
+
+
+
+        .underline-short {
+            border-bottom: 2px solid black;
+            padding-bottom: 2px;
+            width: 140px;
+        }
+
+
+
+
+        /* End new styles */
+        .sub-question-text-wrapper-a {
+            margin-bottom: 9pt;
+        }
+
+        .sub-question-text-wrapper {
+            display: flex;
+            margin-bottom: 9pt;
+        }
+
+        .sub-question-text-wrapper::before {
+            content: "";
+            margin-right: 0.5em;
+            text-align: right;
+        }
+
+        .sub-question {
+            margin-left: 2em;
+            margin-bottom: 9pt;
+        }
+
+        .sub-answer {
+            margin-left: 2em;
+        }
+
+        /*Img - Lockton*/
+        .header {
+            position: absolute;
+            top: 0.5cm;
+            right: 0.5cm;
+            width: 2.41cm;
+            height: 1.1cm;
+        }
+
+
+        .cover-title {
+            font-size: 20pt;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 2.2cm;
+            font-weight: bold;
+            font-style: italic;
+            line-height: 20pt;
+            text-align: center
+        }
+
+
+        .es {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Page 1: Cover -->
+    <div class="page cover">
+
+        <div class="cover-title">
+            Seguro de Responsabilidad Civil Profesional para Instituciones Financieras (Cuestionario de PI).
+        </div>
+    </div>
+
+    <!--Page 2-->
+    <div class="page content">
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" style="width: 2.41cm;" />
+        </div>
+        <!-- Title -->
+        <div class="question title" style="text-align: center; width: 100%;">
+            <span>
+                <span class="es">CUESTIONARIO DE RESPONSABILIDAD CIVIL PROFESIONAL PARA ENTIDADES FINANCIERAS</span>
+                <span class="es"><i>(FI PI PROPOSAL FORM)</i></span>
+            </span>
+        </div>
+
+        <!-- Question 1 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">1.</td>
+                    <td class="question-content">
+                        <span class="es">Nombre de la Sociedad Principal y Domicilio Social:</span><br />
+                        <span class="en">(Name of the Company and address):</span>
+                        <span class="en" th:text="${companyName}"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Question 2 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">2.</td>
+                    <td class="question-content">
+                        <span class="es">Fecha de constitución de la Sociedad Principal:</span><br />
+                        <span class="en">(Date of constitution):</span>
+                        <span class="en" th:text="${companyEstablishmentDate}"></span><br /><br />
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Question 3 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">3.</td>
+                    <td class="question-content">
+                        <span class="es">Descripción completa de la actividad</span>
+                        <span class="en">(Full Description of the activity):</span>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Sub-question a -->
+
+            <div class="sub-question">
+
+                <p class="sub-question-text-wrapper">
+                    <span class="es">a) Sociedad Principal:</span>
+                    <span class="en">(Main Company)</span>
+                    <span class="en" th:text="${mainCompanyActivity}"></span>
+                </p>
+
+            </div>
+            <!-- Sub-question b -->
+
+            <div class="sub-question">
+
+                <p class="sub-question-text-wrapper">
+                    <span class="es">b) Subsidiarias:</span>
+                    <span class="en">(Subsidiaries)</span>
+                    <span class="en"> </span>
+                </p>
+
+            </div>
+        </div>
+        <div>
+            <table id="tablaSubsidiarias">
+                <thead class="align-items:center">
+                    <tr>
+                        <th style="text-align: center;">Nombre de la Subsidiaria<br /><i>(Name of the
+                                Subsidiary)</i>
+                        </th>
+                        <th style="text-align: center;">Ubicación<br /><i>(Location)</i></th>
+                        <th style="text-align: center;">Fecha de Constitución<br /><i>(Date Established)</i></th>
+                        <th style="text-align: center;">Servicios<br /><i>(Services)</i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:if="${tables['subsidiariesTable'] != null}">
+                        <tr th:each="rowKey : ${tables['subsidiariesTable'].rowKeys}">
+                            <td th:each="col : ${tables['subsidiariesTable'].columns}">
+                                <span th:text="${col.rows.get(rowKey)} ?: ''">—</span>
+                            </td>
+                        </tr>
+                    </th:block>
+                    <th:block th:unless="${tables['subsidiariesTable'] != null}">
+                        <tr>
+                            <td colspan="4">No data available</td>
+                        </tr>
+                    </th:block>
+
+                </tbody>
+            </table>
+            <p>
+                <span class="es">Si no tiene suficiente espacio para completar las respuestas, favor continúe en una
+                    hoja aparte</span>
+                <span class="en">If you have insufficient space to complete any of your answers, please continue on
+                    a
+                    separate page.</span>
+            </p>
+        </div>
+
+        <!-- Question 4 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">4.</td>
+                    <td class="question-content">
+                        <span class="es">Es la Compañía:</span>
+                        <span class="en">(Is the company)</span>
+
+                    </td>
+                </tr>
+            </table>
+
+            <div style="padding-left: 30px; padding-bottom: 5px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex align-items-center" style="gap: 0.5em; margin-bottom: 3px;">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${privateCompany != null and privateCompany ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>a) Privada - No cotiza en Bolsa (Private)</strong>
+                    </div>
+
+                    <div class="d-flex align-items-center" style="gap: 0.5em;">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${privateCompany != null and !privateCompany ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>b) Cotiza en Bolsa (Public)</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="sub-question" th:if="${privateCompany}">
+                <p class="sub-question-text-wrapper">
+                    <span>
+                        <span class="es">En caso de cotizar en bolsa, por favor confirmar la(s) Bolsa(s) de Valores
+                            en
+                            que se cotizan </span>
+
+                        <span class="en uderline-short">(If the company is public, please specify the stock
+                            exchange(s)
+                            on which they are listed):</span>
+                    </span>
+                </p>
+            </div>
+
+            <div class="sub-question" th:unless="${privateCompany}">
+                <p class="sub-question-text-wrapper">
+                    <span>
+                        <span class="es">En caso de cotizar en bolsa, por favor confirmar la(s) Bolsa(s) de Valores
+                            en
+                            que se cotizan</span>
+                        <span class="en">(If the company is public, please specify the stock exchange(s) on which
+                            they
+                            are listed):</span>
+                    </span>
+                </p>
+                <span th:text="${privateCompanynormal}"></span>
+            </div>
+
+        </div>
+
+
+
+        <!-- Question 5 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">5.</td>
+                    <td class="question-content">
+                        <span class="es">Detalles de cualquier accionista de la sociedad con más del 5%</span>
+                        <span class="en"><i>(Details of any shareholder with more than 5% paid up
+                                capital)</i></span>
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+        <div>
+            <table id="tablaSubsidiarias">
+                <thead>
+                    <tr>
+                        <th>Nombre<br /><i>(Name)</i></th>
+                        <th>Porcentaje de Acciones<br /><i>(% of shares)</i></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:if="${tables['shareholdersTable'] != null}">
+                        <tr th:each="rowKey : ${tables['shareholdersTable'].rowKeys}">
+                            <td th:each="col : ${tables['shareholdersTable'].columns}">
+                                <span th:text="${col.rows.get(rowKey)} ?: ''">—</span>
+                            </td>
+                        </tr>
+                    </th:block>
+                    <th:block th:unless="${tables['shareholdersTable'] != null}">
+                        <tr>
+                            <td colspan="2">No data available</td>
+                        </tr>
+                    </th:block>
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Question 6 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">6.</td>
+                    <td class="question-content">
+                        <span class="es">En los últimos 5 años, ha tenido lugar cualquier absorción, fusión,
+                            adquisición
+                            o cambio de control?</span>
+                        <span class="en"><i>(In the past 5 years, has there been any acquisition, merger, take-over,
+                                etc.?)</i></span>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${acquisitionYes != null and acquisitionYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${acquisitionYes != null and !acquisitionYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+        <!--Page 3-->
+
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" style="width: 2.41cm;" />
+        </div>
+
+        <!-- Question 7 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">7.</td>
+                    <td class="question-content">
+                        <span class="es">Información de Empleados</span>
+                        <span class="en"><i>(Employees Information)</i></span>
+                    </td>
+                </tr>
+            </table>
+            <!-- Sub-question a -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column;">
+                    <span class="es">a) Indique el número de empleados bajo las siguientes categorías:</span>
+                    <span class="en"><i>(State number of employees in following categories:)</i></span>
+                </p>
+
+            </div>
+            <div>
+                <table id="tablaSubsidiarias">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Año Actual<br /><i>(Current Year)</i></th>
+                            <th>Año anterior<br /><i>(Previous year)</i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="es">Número de empleados, incluyendo empleados temporales<br /><i>(Number of
+                                    employees including temporary staff)</i></td>
+                            <td th:text="${currentYearTotalEmployees}"></td>
+                            <td th:text="${previousYearTotalEmployees}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Número de empleados de Capacitación<br /><i>(Number of Personnel/Training
+                                    staff)</i></td>
+                            <td th:text="${currentYearTrainingStaff}"></td>
+                            <td th:text="${previousYearTrainingStaff}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Número de Personal en el Departamento de Auditoría Interna o de
+                                Cumplimiento<br /><i>(Compliance Department and Internal audit staff)</i></td>
+                            <td th:text="${currentYearComplianceStaff}"></td>
+                            <td th:text="${previousYearComplianceStaff}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Directores y Oficiales<br /><i>(Directors &amp; Officers)</i></td>
+                            <td th:text="${currentYearDirectors}"></td>
+                            <td th:text="${previousYearDirectors}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Personal de ventas, empleados profesionales o cualquier empleado
+                                directamente
+                                en contacto con personas ajenas a la organización<br /><i>(Sales staff, Professional
+                                    Staff or any employees directly involved with third parties)</i></td>
+                            <td th:text="${currentYearSalesStaff}"></td>
+                            <td th:text="${previousYearSalesStaff}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Empleados de soporte<br /><i>(Support Staff)</i></td>
+                            <td th:text="${currentYearSupportStaff}"></td>
+                            <td th:text="${previousYearSupportStaff}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Sub-question b -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column;">
+                    <span>
+                        <span class="es">b) Indique los nombres de todos los Directores y detalles sobre lo
+                            siguiente:</span>
+                        <span class="en"><i>(State names of all Executive Directors, including details of the
+                                following:)</i></span>
+                    </span>
+                </p>
+            </div>
+            <div>
+                <table id="tablaSubsidiarias">
+                    <thead>
+                        <tr>
+                            <th>Nombre<br /><i>(Name)</i></th>
+                            <th>Tiempo de Servicio<br /><i>(Length of Service)</i></th>
+                            <th>Cargo<br /><i>(Position)</i></th>
+                            <th>No. de Acciones en su propiedad<br /><i>(Number of own shares)</i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:if="${tables['directorsTable'] != null}">
+                            <tr th:each="rowKey : ${tables['directorsTable'].rowKeys}">
+                                <td th:each="col : ${tables['directorsTable'].columns}">
+                                    <span th:text="${col.rows.get(rowKey)} ?: ''">—</span>
+                                </td>
+                            </tr>
+                        </th:block>
+                        <th:block th:unless="${tables['directorsTable'] != null}">
+                            <tr>
+                                <td colspan="4">No data available</td>
+                            </tr>
+                        </th:block>
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- Sub-question c -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column;">
+                    <span>
+                        <span class="es">c) Cuál ha sido el porcentaje de rotación en las siguientes categorías de
+                            empleo, durante los últimos doce (12) meses?</span>
+                        <span class="en"><i>(What has been the percentage turnover in the following employment
+                                categories during the last twelve months?)</i></span>
+                    </span>
+                </p>
+
+            </div>
+            <div>
+
+                <table id="tablaSubsidiarias">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Ingresos<br /><i>(Inward)</i></th>
+                            <th>Retiros<br /><i>(Outward)</i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="es">Directores (incluyendo aquellos en las subsidiarias)<br /><i>(Directors
+                                    including those of subsidiaries)</i></td>
+                            <td th:text="${directorsInwardTurnover}"></td>
+                            <td th:text="${directorsOutwardTurnover}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Otros Empleados<br /><i>(Other employees)</i></td>
+                            <td th:text="${otherEmployeesInwardTurnover}"></td>
+                            <td th:text="${otherEmployeesOutwardTurnover}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+
+        <!--Page 4-->
+
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" />
+        </div>
+
+        <!-- Sub-question d -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column;">
+                <span class="es">d) Indique el total de salarios pago a Directores y Empleados (incluyendo
+                    comisiones), durante el último año fiscal.</span>
+                <span class="en"><i>(State the total of salaries, including commissions, paid to Directors and
+                        Employees during the last financial year.)</i></span>
+            </p>
+            <p><span th:text="${totalSalaries}"></span></p>
+        </div>
+
+        <!-- Question 8 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">8.</td>
+                    <td class="question-content">
+                        <span class="es">Actividades y Servicios de la Compañía:</span>
+                        <span class="en"><i>(Activities and Services of the Company)</i></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <!-- Sub-question a -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column;">
+                    <span class="es">a) Cuál es el porcentaje de ingresos totales de la Compañía proveniente de
+                        las
+                        siguientes actividades y servicios?</span>
+                    <span class="en"><i>(What percentage of the Proposer's total revenues was derived from the
+                            following
+                            activities and services?)</i></span>
+                </p>
+            </div>
+            <div>
+                <table id="tablaSubsidiarias">
+                    <thead>
+                        <tr>
+                            <th>Actividades y Servicios<br /><i>(Activities and services)</i></th>
+                            <th>Año Actual<br /><i>(Current Year)</i></th>
+                            <th>Año anterior<br /><i>(Previous year)</i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="es strong">Préstamos, arriendos o Extensiones de
+                                Crédito:<br /><i>(Loans, Leases or Extensions of Credit)</i></td>
+                            <td th:text="${currentYearLoans}"></td>
+                            <td th:text="${previousYearLoans}"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 0.5cm;" class="es">1. Comercial <i>(Commercial)</i></td>
+                            <td th:text="${currentYearCommercialLoans}"></td>
+                            <td th:text="${previousYearCommercialLoans}"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 0.5cm;" class="es">2. Interbanca <i>(Interbanca)</i></td>
+                            <td th:text="${currentYearInterbancaLoans}"></td>
+                            <td th:text="${previousYearInterbancaLoans}"></td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding-left: 0.5cm;" class="es">3. Personal <i>(Personal)</i></td>
+                            <td th:text="${currentYearPersonalLoans}"></td>
+                            <td th:text="${previousYearPersonalLoans}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Financiamiento Comercial <i>(Trade Financing, A Forfait)</i></td>
+                            <td th:text="${currentYearTradeFinancing}"></td>
+                            <td th:text="${previousYearTradeFinancing}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Negociaciones de Cambio <i>(Foreign Exchange Dealing)</i></td>
+                            <td th:text="${currentYearForeignExchange}"></td>
+                            <td th:text="${previousYearForeignExchange}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Negociaciones de Mercado <i>(Commodity Market Dealing)</i></td>
+                            <td th:text="${currentYearCommodityMarket}"></td>
+                            <td th:text="${previousYearCommodityMarket}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Actuando como Negociador/Corredor de Títulos <i>(Acting as Securities
+                                    Broker/Dealer)</i></td>
+                            <td th:text="${currentYearSecuritiesBroker}"></td>
+                            <td th:text="${previousYearSecuritiesBroker}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">Actuando como depositario o custodio o agente de Títulos o dinero
+                                <i>(Acting
+                                    as a custodian or depository or managing agent for Securities or money)</i>
+                            </td>
+                            <td th:text="${currentYearCustodian}"></td>
+                            <td th:text="${previousYearCustodian}"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="es">Actuando como un Asesor para <i>(Acting as an advisor
+                                    for)</i>
+                            </td>
+                            <!--
+                            <td th:text="${currentYearAdvisor}"></td>
+                            <td th:text="${previousYearAdvisor}"></td>
+                            -->
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 0.5cm;" class="es">1. Fusiones y adquisiciones <i>(Mergers
+                                    and
+                                    Acquisitions)</i></td>
+                            <td th:text="${currentYearMergers}"></td>
+                            <td th:text="${previousYearMergers}"></td>
+                        </tr>
+
+
+                        <tr>
+                            <td style="padding-left: 0.5cm;" class="es">2. Colocación de Acciones y Nuevas
+                                Emisiones
+                                <i>(Share Placing and New Issues)</i>
+                            </td>
+                            <td th:text="${currentYearSharePlacing}"></td>
+                            <td th:text="${previousYearSharePlacing}"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 0.5cm;" class="es">3. Riesgo capital <i>(Venture
+                                    Capital)</i>
+                            </td>
+                            <td th:text="${currentVentureCapital}"></td>
+                            <td th:text="${previousVentureCapital}"></td>
+                        </tr>
+                        <tr>
+                            <td class="es">4. Otra (por favor describa):<br /><i>(Other [please describe])</i>
+                            </td>
+                            <td colspan="2" th:text="${otherActivities}"></td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding-left: 0.5cm;" class="es">Actuando como fideicomisario bajo
+                                contrato<br /><i>(Acting as a trustee under bond indenture)</i></td>
+                            <td th:text="${currentYearTrustee}"></td>
+                            <td th:text="${previousYearTrustee}"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 0.5cm;" class="es">Asesoría en el extranjero (si aplica,
+                                anexe
+                                un
+                                papel detallando cuales países están cubiertos.)<br /><i>(Overseas Advisory [if
+                                    applicable, attach separate sheet stating which countries are covered])</i>
+                            </td>
+                            <td th:text="${currentYearOverseasAdvisory}"></td>
+                            <td th:text="${previousYearOverseasAdvisory}"></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 0.5cm;" class="es">Otras Actividades<br /><i>(Other
+                                    Activities)</i>
+                            </td>
+                            <td th:text="${currentYearOtherActivities}"></td>
+                            <td th:text="${previousYearOtherActivities}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+
+        <!--Page 5-->
+
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" />
+        </div>
+
+        <!-- Sub-question b -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper">
+                <span>
+                    <span class="es">b) ¿Ha la Compañía ofrecido algún nuevo servicio a sus clientes en los
+                        pasados
+                        tres (3) años?</span>
+                    <span class="en"><i>(Has the Company offered any new services to its clients during the
+                            last
+                            3
+                            years?)</i></span>
+                </span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${newServicesYes != null and newServicesYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${newServicesYes != null and !newServicesYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Sub-question c -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper">
+                <span>
+                    <span class="es">c) ¿Tiene la Compañía la intención de ofrecer algún nuevo servicio para
+                        sus
+                        clientes dentro de los próximos doce (12) meses?</span>
+                    <span class="en"><i>(Does the Company intend to offer any new services to its clients
+                            during
+                            the
+                            next 12 months?)</i></span>
+                </span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${futureServicesYes != null and futureServicesYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${futureServicesYes != null and !futureServicesYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <!-- Sub-question d -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">d) ¿Ante que organismo regulador debe rendir cuentas la Compañía y sus
+                    subsidiarias?</span>
+                <span class="en"><i>(To which regulatory authorities are the Company and its subsidiaries
+                        accountable?)</i></span>
+            </p>
+            <span class="es" th:text="${regulatoryAuthorities}"></span>
+        </div>
+
+        <!-- Sub-question e -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper">
+                <span>
+                    <span class="es">e) ¿Ha la Compañía estado actuando como asesor en procesos de Fusiones y
+                        Adquisiciones en los en los últimos doce (12) meses?</span>
+                    <span class="en"><i>(Has the Company been acting as an adviser in regards to Merger &amp;
+                            Acquisitions Activities?)</i></span>
+                </span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${mergerAdvisorYes != null and mergerAdvisorYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${mergerAdvisorYes != null and !mergerAdvisorYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div style="margin-left: 0.5em;">
+                <p class="es strong">Si la respuesta es Sí, favor complete lo siguiente:</p>
+                <p class="en"><i>(If yes, please complete the following)</i></p>
+            </div>
+            <div>
+                <table id="tablaSubsidiarias">
+                    <thead>
+                        <tr>
+                            <th>Oferente<br /><i>(Offerer)</i></th>
+                            <th>Parte Interesada<br /><i>(Interested Party)</i></th>
+                            <th>Resultados<br /><i>(Outcome)</i></th>
+                            <th>Valor de la Oferta<br /><i>(Offer Value)</i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <th:block th:if="${tables['mergerAdvisorTable'] != null}">
+                            <tr th:each="rowKey : ${tables['mergerAdvisorTable'].rowKeys}">
+                                <td th:each="col : ${tables['mergerAdvisorTable'].columns}">
+                                    <span th:text="${col.rows.get(rowKey)} ?: ''">—</span>
+                                </td>
+                            </tr>
+                        </th:block>
+                        <th:block th:unless="${tables['mergerAdvisorTable'] != null}">
+                            <tr>
+                                <td colspan="4">No data available</td>
+                            </tr>
+                        </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sub-question f -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper">
+                <span>
+                    <span class="es">f) Ha la Compañía estado actuando como asesor en procesos de Colocación de
+                        Acciones y Nuevas Emisiones en los en los últimos doce (12) meses?</span>
+                    <span class="en"><i>(Has the Company been acting as an adviser in regards to Share Placing
+                            and
+                            New Issues?)</i></span>
+                </span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${sharePlacingAdvisorYes != null and sharePlacingAdvisorYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${sharePlacingAdvisorYes != null and !sharePlacingAdvisorYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+        <!--Page 6-->
+
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" style="width: 2.41cm;" />
+        </div>
+
+        <!-- Question 9 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">9.</td>
+                    <td class="question-content">
+                        <span class="es">La Compañía realiza actividades de fideicomiso o de manejo de fondos de
+                            inversión?</span>
+                        <span class="en"><i>(Does the Company undertake trust activities or fund investment
+                                management?)</i></span>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${trustActivitiesYes != null and trustActivitiesYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${trustActivitiesYes != null and !trustActivitiesYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <p class="es strong">Si la respuesta es Sí, favor complete el Anexo No. 1.</p>
+            <p class="en"><i>(If yes, please complete the Annex N.1)</i></p>
+        </div>
+
+        <!-- Question 10 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">10.</td>
+                    <td class="question-content">
+                        <span class="es">¿Está la Compañía suscrita en algún Sistema de Transferencia
+                            Electrónica de
+                            Fondos?</span>
+                        <span class="en"><i>(Does the Company use or subscribe to any Electronic Funds Transfer
+                                Systems?)</i></span>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${electronicTransferYes != null and electronicTransferYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${electronicTransferYes != null and !electronicTransferYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <p class="es strong">Si la respuesta es Sí, favor complete el Anexo No. 2.</p>
+            <p class="en"><i>(If yes, please complete the Annex N.2)</i></p>
+        </div>
+
+
+        <!-- Question 11 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">11.</td>
+                    <td class="question-content">
+                        <span class="es">Provee la Compañía facilidades de acceso por Internet.</span>
+                        <span class="en"><i>(Does the Company provide an Internet Facility?)</i></span>
+                    </td>
+                </tr>
+            </table>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${internetAccessYes != null and internetAccessYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${internetAccessYes != null and !internetAccessYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <p class="es strong">Si la respuesta es Sí, favor complete el Anexo No. 3.</p>
+            <p class="en"><i>(If yes, please complete the Annex N.3)</i></p>
+        </div>
+
+        <!-- Question 12 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">12.</td>
+                    <td class="question-content">
+                        <span class="es">Detalles sobre Auditorías</span>
+                        <span class="en"><i>(Audits)</i></span>
+                    </td>
+                </tr>
+            </table>
+            <!-- Sub-question a -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                    <span class="es">a) Nombre y dirección de los Auditores Externos:</span>
+                    <span class="en"><i>(Name and address of External Auditors)</i></span>
+                </p>
+                <p th:text="${externalAuditorName}"></p>
+                <p th:text="${externalAuditorAddress}"></p>
+            </div>
+            <!-- Sub-question b -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                    <span class="es">b) Frecuencia de las auditorías a la Compañía por parte del Auditor
+                        Externo:</span>
+                    <span class="en"><i>(Frequency of Auditing Services to the Company performed by the
+                            Auditors)</i></span>
+                </p>
+                <p th:text="${auditFrequency}"></p>
+            </div>
+            <!-- Sub-question c -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                    <span class="es">c) El Auditor Externo revisa regularmente los sistemas de control
+                        interno?</span>
+                    <span class="en"><i>(Does the External Auditor regularly review the system of internal
+                            controls?)</i></span>
+                </p>
+                <div style="padding-left: 30px;">
+                    <div class="d-flex flex-column">
+
+                        <div class="d-flex">
+                            <label class="checkbox">
+                                <span class="checkboxmark"
+                                    th:text="${internalControlReviewYes != null and internalControlReviewYes ? 'x' : ''}"></span>
+                            </label>
+                            &nbsp; <strong>SI/YES</strong>
+                        </div>
+
+                        <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                            <label class="checkbox">
+                                <span class="checkboxmark"
+                                    th:text="${internalControlReviewYes != null and !internalControlReviewYes ? 'x' : ''}"></span>
+                            </label>
+                            &nbsp; <strong>NO</strong>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <!-- Sub-question d -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                    <span class="es">d) El Auditor Externo emite reportes escritos?</span>
+                    <span class="en"><i>(Does the External Auditor furnish written reports?)</i></span>
+                </p>
+
+                <div style="padding-left: 30px;">
+                    <div class="d-flex flex-column">
+
+                        <div class="d-flex">
+                            <label class="checkbox">
+                                <span class="checkboxmark"
+                                    th:text="${writtenReportsYes != null and writtenReportsYes ? 'x' : ''}"></span>
+                            </label>
+                            &nbsp; <strong>SI/YES</strong>
+                        </div>
+
+                        <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                            <label class="checkbox">
+                                <span class="checkboxmark"
+                                    th:text="${writtenReportsYes != null and !writtenReportsYes ? 'x' : ''}"></span>
+                            </label>
+                            &nbsp; <strong>NO</strong>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!--Page 7-->
+
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" style="width: 2.41cm;" />
+        </div>
+
+
+        <div class="question">
+
+            <!-- Sub-question e -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                    <span class="es">e) Se ha realizado alguna recomendación en las últimas dos
+                        auditorías?</span>
+                    <span class="en"><i>(Has the Auditing Firm made any recommendations in the last two
+                            audits?)</i></span>
+                </p>
+
+                <div style="padding-left: 30px;">
+                    <div class="d-flex flex-column">
+
+                        <div class="d-flex">
+                            <label class="checkbox">
+                                <span class="checkboxmark"
+                                    th:text="${auditRecommendationsYes != null and auditRecommendationsYes ? 'x' : ''}"></span>
+                            </label>
+                            &nbsp; <strong>SI/YES</strong>
+                        </div>
+
+                        <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                            <label class="checkbox">
+                                <span class="checkboxmark"
+                                    th:text="${auditRecommendationsYes != null and !auditRecommendationsYes ? 'x' : ''}"></span>
+                            </label>
+                            &nbsp; <strong>NO</strong>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <p class="es">Si la respuesta es Sí, favor dar detalles y confirmar si se han adoptado.
+                </p>
+                <p class="en"><i>(If yes, please give details and confirm if they have been adopted)</i></p>
+                <p th:if="${auditRecommendationsYes}" th:text="${auditRecommendationsYesnormal}"></p>
+            </div>
+        </div>
+
+        <!-- Additional part of Question 13 -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">f) Se han cambiado de auditores externos en los últimos 5 años?</span>
+                <span class="en"><i>(Has the Auditing Firm been changed in the last five years?)</i></span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${auditorChangedYes != null and auditorChangedYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${auditorChangedYes != null and !auditorChangedYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <p class="es strong">Si la respuesta es Sí, por favor explique las razones.</p>
+            <p class="en"><i>(If so, give details and explain why the change was made.)</i></p>
+            <p th:if="${auditorChangedYes}" th:text="${auditorChangedYesnormal}"></p>
+        </div>
+
+        <!-- Sub-question g -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">g) Tiene la Compañía un Departamento de Auditoría Interna?</span>
+                <span class="en"><i>(Does the Company have an Internal Audit Department?)</i></span>
+            </p>
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${internalAuditDeptYes != null and internalAuditDeptYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${internalAuditDeptYes != null and !internalAuditDeptYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Sub-question h -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">h) Frecuencia de las auditorías por el Auditor Interno:</span>
+                <span class="en"><i>(Frequency of Auditing by the Audit Department)</i></span>
+            </p>
+            <p th:text="${internalAuditFrequency}"></p>
+        </div>
+
+        <!-- Sub-question i -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">i) Tiene la Compañía un Código de Ética por escrito que abarque a todos
+                    los
+                    empleados y que incluya los lineamientos de conducta aceptable, y con las normas
+                    para
+                    actividades externas aceptable, conflictos de intereses, regalos de clientes y
+                    prohibición
+                    de
+                    otras actividades?</span>
+                <span class="en"><i>(Does the Company have a written Code of Ethics encompassing all
+                        employees
+                        which
+                        includes a statement on the principles of acceptable conduct, and with
+                        guidelines
+                        for
+                        acceptable outside activities, conflicts of interests, gifts from customers, and
+                        prohibition
+                        on other employment?)</i></span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${ethicsCodeYes != null and ethicsCodeYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${ethicsCodeYes != null and !ethicsCodeYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <!--Page 8-->
+
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" style="width: 2.41cm;" />
+        </div>
+
+
+        <!-- Sub-question j -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">j) ¿Se requiere de los empleados una aceptación por escrito de que han
+                    leído el
+                    Código de Ética y de que se apegan a sus normas?</span>
+                <span class="en"><i>(Are employees required to agree in writing that they have read the
+                        ethics
+                        code
+                        and are abiding by said code?)</i></span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${ethicsCodeAcknowledgementYes != null and ethicsCodeAcknowledgementYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${ethicsCodeAcknowledgementYes != null and !ethicsCodeAcknowledgementYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <!-- Sub-question k -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">k) ¿Requiere a todos los Directores y empleados una declaración de sus
+                    intereses de
+                    negocios externos, así como las relaciones que podrían conllevar a posibles
+                    conflictos
+                    de
+                    interés?</span>
+                <span class="en"><i>(Do you require all Directors and Employees to declare their outside
+                        business
+                        interests and specify relationships which could lead to possible conflicts of
+                        interest?)</i></span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${conflictDeclarationYes != null and conflictDeclarationYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${conflictDeclarationYes != null and !conflictDeclarationYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <!-- Question 13 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">13.</td>
+                    <td class="question-content">
+                        <span class="es">Departamento Legal/Abogados</span>
+                        <span class="en"><i>(Legal Department/Lawyers)</i></span>
+                    </td>
+                </tr>
+            </table>
+            <!-- Sub-question a -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                    <span class="es">a) Nombre y dirección de los asesores legales que actúan
+                        rutinariamente
+                        en
+                        nombre
+                        de la Compañía:</span>
+                    <span class="en"><i>(Name and address of Lawyers routinely acting for the
+                            Company)</i></span>
+                </p>
+                <span th:text="${legalNameAddress}"></span>
+            </div>
+
+
+
+        </div>
+
+
+        <!-- Sub-question b -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">b) ¿Proporcionan los abogados opiniones escritas acerca de la
+                    legalidad
+                    de
+                    cualquier cambio de política administrativa o de inversión o de fideicomiso en
+                    conexión
+                    con
+                    las
+                    actividades del Proponente?</span>
+                <span class="en"><i>(Do the Lawyers supply written opinions as to the legality of
+                        any
+                        change
+                        in
+                        investment or management policy in connection with Trust-related
+                        activities?)</i></span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${legalOpinionsYes != null and legalOpinionsYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${legalOpinionsYes != null and !legalOpinionsYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">c) Tiene el Proponente un Departamento Legal Interno?</span>
+                <span class="en"><i>(Does the Proposer have an in-house Legal Department?)</i></span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${internalLegalDeptYes != null and internalLegalDeptYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${internalLegalDeptYes != null and !internalLegalDeptYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Sub-question c -->
+
+        <p class="es">Si la respuesta es Sí, favor dar detalles de:</p>
+        <p class="en"><i>(If so, please give details of:)</i></p>
+        <div style="margin-left: 3em;">
+
+            <p th:text="${internalLegalDeptnormal}"></p>
+
+            <p>
+                <span class="es">
+                    (i) ¿Cuántas personas calificadas lo componen?
+                </span>
+                <span class="en"><i>How many legally qualified individuals does it consist of?</i>
+                </span>
+                <span th:text="${internalLegalIndividuals}"></span>
+            </p>
+
+        </div>
+
+
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" style="width: 2.41cm;" />
+        </div>
+
+        <div style="margin-left: 3em;">
+
+            <p>
+                <span class="es">(ii) ¿Cuáles son las responsabilidades del Departamento?</span>
+                <span class="en"><i>(What are the department's responsibilities?)</i></span>
+                <span th:text="${departmentResponsibilities}"></span>
+            </p>
+
+            <p>
+                <span class="es">(iii) ¿Ofrece su servicio a terceras personas? Si la respuesta es
+                    Sí,
+                    favor
+                    dar
+                    detalles.</span>
+                <span class="en"><i>(Does it offer its services to customers or other Third Parties?
+                        If
+                        so,
+                        please give details)</i></span>
+            <div style="padding-left: 30px; padding-top: 10px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${thirdPartyServicesYes != null and thirdPartyServicesYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${thirdPartyServicesYes != null and !thirdPartyServicesYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <span th:if="${thirdPartyServicesYes}" th:text="${ThirdPartyServicesYesnormal}"></span>
+            </p>
+
+            <p>
+                <span class="es">(iv) ¿Son todas las publicaciones emitidas por la Compañía
+                    revisadas
+                    regularmente por el Departamento Legal Interno y/o asesores legales
+                    externos?</span>
+                <span class="en"><i>(Are all publications issued by the Company reviewed by the
+                        in-house
+                        Legal
+                        Department and/or external legal advisers?)</i></span>
+
+            <div style="padding-left: 30px;padding-top: 10px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${legalReviewYes != null and legalReviewYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${legalReviewYes != null and !legalReviewYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+            </p>
+        </div>
+
+        <!-- Question 14 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">14.</td>
+                    <td class="question-content">
+                        <span class="es">RECLAMACIONES / SINIESTRALIDAD</span>
+                        <span class="en"><i>(Claims History)</i></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Sub-question a -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">a) Hay algún litigio, actualmente pendiente, en contra de la
+                    Compañía,
+                    sus
+                    subsidiarias, agencias; o cualquier de sus empleados que pueda afectar el seguro
+                    solicitado?</span>
+                <span class="en"><i>(Is there any material litigation currently pending against the
+                        company,
+                        its
+                        subsidiaries, its branches or any employee that may affect the coverage for
+                        which
+                        you
+                        are
+                        applying?)</i></span>
+            </p>
+
+            <div style="padding-left: 30px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${pendingLitigationYes != null and pendingLitigationYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${pendingLitigationYes != null and !pendingLitigationYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Sub-question b -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">b) Tiene la Compañía algún conocimiento o información, después de una
+                    investigación
+                    completa, de cualquier hecho, error o circunstancia que pudiera dar cabida a
+                    reclamos en
+                    su
+                    contra o de sus subsidiarias o agencias a las cuales es aplicable esta
+                    solicitud?</span>
+                <span class="en"><i>(Does the Company have any knowledge or information, after full
+                        enquiry,
+                        of
+                        any
+                        fact, error or circumstances whatsoever which might give rise to claims being
+                        made
+                        against
+                        it, its subsidiaries or any branches to which this application
+                        applies?)</i></span>
+            </p>
+
+            <div style="padding-left: 30px;padding-top: 10px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${potentialClaimsYes != null and potentialClaimsYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${potentialClaimsYes != null and !potentialClaimsYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" style="width: 2.41cm;" />
+        </div>
+
+        <!-- Sub-question c -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">c) Ha la Compañía recibido críticas o directrices de algún órgano
+                    regulador
+                    durante
+                    los últimos cinco (5) años?</span>
+                <span class="en"><i>(During the last five years has the Company received any
+                        admonishment or
+                        critical directive from any regulatory authority?)</i></span>
+            </p>
+
+            <div style="padding-left: 30px;padding-top: 10px;">
+                <div class="d-flex flex-column">
+
+                    <div class="d-flex">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${regulatoryCriticismYes != null and regulatoryCriticismYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>SI/YES</strong>
+                    </div>
+
+                    <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                        <label class="checkbox">
+                            <span class="checkboxmark"
+                                th:text="${regulatoryCriticismYes != null and !regulatoryCriticismYes ? 'x' : ''}"></span>
+                        </label>
+                        &nbsp; <strong>NO</strong>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <!-- Sub-question d -->
+        <div class="sub-question">
+            <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                <span class="es">En caso afirmativo a cualquier pregunta anterior, por favor dar
+                    detalles:</span>
+                <span class="en"><i>(If the answer is YES to any of the questions above please give
+                        details)</i></span>
+            </p>
+            <p th:text="${claimDetails}"></p>
+        </div>
+
+
+        <!-- Question 15 - MODIFIED with table-based layout -->
+        <div class="question">
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">15.</td>
+                    <td class="question-content">
+                        <span class="es">PROGRAMA DE SEGURO ANTERIOR O ACTUAL</span>
+                        <span class="en"><i>(Previous/Current Insurance Program)</i></span>
+                    </td>
+                </tr>
+            </table>
+            <!-- Sub-question a -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                    <span class="es">a) ¿Ha tenido la Compañía, durante los últimos tres (3) años, un Seguro
+                        de
+                        Responsabilidad Civil Profesional?</span>
+                    <span class="en"><i>(Have the Company contracted PI Insurance in the last 3
+                            years?)</i></span>
+                </p>
+                <div style="padding-left: 30px; padding-top: 10px;">
+                    <div class="d-flex flex-column">
+
+                        <div class="d-flex">
+                            <label class="checkbox">
+                                <span class="checkboxmark"
+                                    th:text="${previousInsuranceYes != null and previousInsuranceYes ? 'x' : ''}"></span>
+                            </label>
+                            &nbsp; <strong>SI/YES</strong>
+                        </div>
+
+                        <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+                            <label class="checkbox">
+                                <span class="checkboxmark"
+                                    th:text="${previousInsuranceYes != null and !previousInsuranceYes ? 'x' : ''}"></span>
+                            </label>
+                            &nbsp; <strong>NO</strong>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <p class="es">- Asegurador: <i>(Insurer)</i><span th:text="${previousInsurer}"></span></p>
+                <p class="es">- Fecha de terminación de la póliza: <i>(Expiry date of the policy)</i><span
+                        th:text="${policyEndDate}"></span></p>
+                <p class="es">- Suma Asegurada: <i>(Sum Insured)</i> <span th:text="${policyAssuredSum}"></span>
+                </p>
+            </div>
+            <!-- Sub-question b -->
+            <div class="sub-question">
+                <p class="sub-question-text-wrapper d-flex" style="flex-direction: column; margin-left: 0.5em;">
+                    <span class="es">b) Suma asegurada requerida para esta propuesta:</span>
+                    <span class="en"><i>(Sum insured requested for this proposal)</i></span>
+
+
+                </p>
+                <span class="en" th:text="${requestedAssuredSum}"></span>
+            </div>
+        </div>
+
+
+
+
+
+        <!--Page Final-->
+
+        <div class="header">
+            <img src="lockton.jpg" alt="Lockton" style="width: 2.41cm;" />
+        </div>
+
+
+        <!-- Declaration Section -->
+        <div class="question">
+            <span class="d-flex flex-direction-column">
+                <span class="es">DECLARATION</span>
+                <span class="en"></span>
+            </span>
+            <p class="es">El funcionario autorizado abajo firmante declara que hasta donde sabe y cree, las
+                declaraciones aquí expuestas son verídicas. La firma de este cuestionario de renovación no
+                obliga el
+                abajo firmante, en nombre del As La firma de este cuestionario de renovación no obliga el
+                abajo
+                firmante, en nombre del Asegurado, a efectuar el seguro.</p>
+            <div style="margin-top: 30px;">
+                <p class="es"><strong>FIRMADO</strong> <i>(SIGNATURE)</i>: _______________________</p>
+                <p class="es"><strong>CARGO</strong> <i>(POSITION)</i>: <span th:text="${signerPosition}"></span>
+                </p>
+                <p class="es"><i>(Debe ser firmado por el Presidente o Consejero Delegado de la Sociedad
+                        Principal)</i>
+                </p>
+                <p class="es"><i>(Must be signed by the Chairman of the Board or the Managing Director of
+                        the
+                        principal
+                        company)</i></p>
+                <p class="es"><strong>LUGAR Y FECHA</strong> <span th:text="${signatureDate}"></span></p>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>

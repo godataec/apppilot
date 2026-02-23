@@ -1,0 +1,83 @@
+INSERT INTO QUESTIONNAIRE (IDQUESTIONNAIRE,IDINSURANCE, NAMEQUESTIONNAIRE, DESCRIPTION, CREATEDAT, STATUS, SOURCEFILE, TOTALQUESTION) VALUES ('9','3','FORMULARIO D&O WILLIS 2024 ','FORMULARIO D&O WILLIS 2024 TEMPLATE','','TRUE','FORMULARIOD&O2024WILIS.docx', 33);
+
+INSERT INTO QUESTION (IDQUESTION,IDQUESTIONNAIRE,TYPEQUESTION, DESCRIPTIONQUESTION ,QUESTIONTEXT ,QUESTIONJSON ,PARENTID ,DOCUMENTID) VALUES 
+(9000,'9','DES','','CUESTIONARIO DE RESPONSABILIDAD CIVIL DE DIRECTORES Y ADMINISTRADORES. (DIRECTORS AND OFFICERS LIABILITY PROPOSAL FORM)','','',''),
+(9001,'9','DES','1','','','',''),
+(9002,'9','NORMAL','a','Nombre de la Sociedad Principal (Name of the firm): ','','9001','willisDOpONEa'),
+(9003,'9','NORMAL','b','Domicilio Social (Address):  ','','9001','willisDOpONEb'),
+(9004,'9','NORMAL','c','Descripción completa de la actividad (Description of the activity): ','','9001','willisDOpONEc'),
+(9005,'9','NORMAL','d','Fecha de constitución (Date of constitution)  ','','9001','willisDOpONEd'),
+(9006,'9','MULTIPLE','e','Desglose en % el volumen de las ventas realizadas en el último ejercicio-  (Breakdown in % of the sales made during the last accounting period) ',
+       '{"S1P1ER1":{"Id":"S1P1ER1","text":"-País domicilio (Home country)","code":"willisDOpONEeHome"},
+         "S1P1ER2":{"Id":"S1P2ER2","text":"-Europa (Europa) ","code":"willisDOpONEeEurope"},
+         "S1P1ER3":{"Id":"S1P2ER3","text":"-EEUU (U.S.A)","code":"willisDOpONEeUSA"},
+         "S1P1ER4":{"Id":"S1P2ER4","text":"-Resto del mundo (Rest of the World)","code":"willisDOpONEeWorld"}}','9001',''),
+
+(9007,'9','DES','2','','','',''),
+(9008,'9','SELECTOR-NORMAL','a','Es la Compañía (Is the company)',
+       '{"S1P2A1":{"Id":"S1P2A1","text":"","code":"willisDOpTWOaPublic"}}','9007',''),
+(9009,'9','NORMAL','b','Número total de accionistas (Total No. of Shareholders) ','','9007','willisDOpTWOb'),
+(9010,'9','NORMAL','c','Número total de acciones (en %) propiedad de los Administradores y directores: (Number of shares in % in hands of Directors and Officers) ','','9007','willisDOpTWOc'),
+(9012,'9','MULTIPLE','d','Detalles de cualquier accionista de la sociedad con más del 5%:-(Details of any shareholder with more than 5% paid up capital)',
+       '{"S1P2DR1":{"Id":"S1P2DR1","text":"Nombre (Name)","code":"willisDOpTHREEDname"},
+         "S1P2DR2":{"Id":"S1P2DR2","text":"Porcentaje de Acciones (% of shares) ","code":"willisDOpTHREEDpercent"}}','9007',''),
+(9013,'9','OPTIONAL','e','¿En los últimos 5 años, se ha realizado cualquier emisión de títulos valores/ acciones?-(In the past 5 years, has there been any issue of securities / shares?)',
+       '{"S1P2E1":{"Id":"S1P2E1","text":"","code":"willisDOpTHREEEYes"}}','9007',''),
+(9014,'9','OPTIONAL-NORMAL','f','Se cotizan las acciones públicamente (Are shares publicly traded)',
+       '{"S1P2F1":{"Id":"S1P2F1","text":"En caso afirmativo, por favor confirmar la(s) Bolsa(s) de Valores en que se cotizan:(If yes, please specify the stock exchange(s) on which they are listed)","code":"willisDOpTHREEFYes"}}'
+    ,'9007',''),
+(9016,'9','NORMAL','g','Número total de acciones emitidas(Total number of shares issued)','','9007','willisDOpTHREEG'),
+(9017,'9','OPTIONAL','h','¿Ha revelado la sociedad o alguna de sus subsidiarias públicamente que pretende hacer una oferta pública de acciones durante el año próximo? (Has the company or any of its subsidiaries publicly revealed that it is intending a public offering of securities within the next year?)',
+       '{"S1P2H1":{"Id":"S1P2H1","text":"","code":"willisDOpTHREEHYes"}}','9007',''),
+(9018,'9','NORMAL','i','En caso afirmativo a cualquiera de las preguntas anteriores, por favor dé detalles completos  (If yes to any previous question, please give details):  ','','9007','willisDOpTHREEdetails'),
+
+(9019,'9','DES','3','Favor confirmar si (Please confirm if): ','','',''),
+(9020,'9','OPTIONAL','a','¿En los últimos 5 años, ha tenido lugar cualquier absorción, fusión, adquisición o cambio de control? (In the past 5 years, has there any acquisition, merger, take-over, etc ?',
+       '{"S1P3A1":{"Id":"S1P3A1","text":"","code":"willisDOpTHREEaYes"}}','9019',''),
+(9021,'9','OPTIONAL','b','¿Ha revelado la sociedad o alguna de sus subsidiarias públicamente que en el momento actual tienen en consideración cualquier absorción, fusión, adquisición y/o cambio de control durante el próximo año? (Has the company or any of its subsidiaries publicly announced any merger, acquisition or take-over within the next year?)',
+       '{"S1P3B1":{"Id":"S1P3B1","text":"","code":"willisDOpTHREEbYes"}}','9019',''),
+(9022,'9','OPTIONAL','c','¿La sociedad o alguna de sus subsidiarias está actualmente participando en o considerando cualquier reestructuración o reorganización financiera o legal? (¿Is the company or any of its subsidiaries currently involved in or considering any restructuring or legal or financial reorganisation or filing for bankruptcy?)',
+       '{"S1P3C1":{"Id":"S1P3C1","text":"","code":"willisDOpTHREEcYes"}}','9019',''),
+
+(9023,'9','DES','4','EXPOSICION EN LOS ESTADOS UNIDOS DE AMERICA (USA exposure)  ','','',''),
+(9024,'9','OPTIONAL-NORMAL','1','¿Tiene la Compañía o cualquiera de sus Subsidiarias exposición en USA? Si la respuesta es SI, favor dar detalles de:   SI /YES   NO -- (Does the company or any of its subsidiaries have any exposure in the USA?  If yes, please give details of:',
+       '{"S1P4Y":{"Id":"S1P4Y","text":"SI/YES","code":"willisDOpFOURYes"},
+         "S1P4N":{"Id":"S1P4N","text":"NO","code":"willisDOpFOURNo"}}','9023',''),
+(9025,'9','NORMAL','a','Activos totales en USA (Total assets in U.S.A.):','{"S1P4A":{"Id":"S1P4A","text":"","code":"willisDOpFOURa"}}','9024',''),
+(9026,'9','NORMAL','b','Porcentaje de activos totales de la compañía en USA: - (Percentage of the company''s total assets in U.S.A.) ','{"S1P4B":{"Id":"S1P4B","text":"","code":"willisDOpFOURb"}}','9024',''),
+(9028,'9','MULTIPLE','c','Por favor, liste las filiales en USA (USA Subsidiaries):  ',
+       '{"S1P4CR1":{"Id":"S1P4CR1","text":"Nombre (Name)","code":"willisDOpFOURcname"},
+         "S1P4CR2":{"Id":"S1P4CR2","text":"Porcentaje de Acciones (% of shares) ","code":"willisDOpFOURcpercent"}}','9024',''),
+
+(9029,'9','DES','5','Confirmar si la Compañía o cualquier persona propuesta como Asegurado, se ha visto involucrado en: (Please confirm if the Company or anyone for whom insurance is entended  has been involved in the following :)  ','','',''),
+(9030,'9','OPTIONAL','a','Litigios antimonopolio (Any antitrust litigations):','{"S1P5A":{"Id":"S1P5A","text":"","code":"willisDOpFIVEa"}}','9029',''),
+(9031,'9','OPTIONAL','b','Derechos de autor o patente (Copyright or Patent litigation):','{"S1P5B":{"Id":"S1P5B","text":"","code":"willisDOpFIVEb"}}','9029',''),
+(9032,'9','OPTIONAL','c','"Representative Actions" or "class actions"o demanda judicial derivativa: (Any representative actions, class actions or derivative suits)','{"S1P5C":{"Id":"S1P5C","text":"","code":"willisDOpFIVEc"}}','9029',''),
+(9033,'9','SUB','','En caso afirmativo a cualquier pregunta anterior, por favor dar detalles: (If the answer is YES to any of the questions above please give details) ','{"S1P5C1":{"Id":"S1P5C1","text":"","code":"willisDOpFIVEcIF"}}','9029',''),
+(9034,'9','OPTIONAL','d','¿Hay algun litigio, actualmente pendiente, en contra de la Compañía o cualquier de sus directores o administradores que pueda afectar el seguro solicitado? (¿Is there any material litigation currently pending against the company or any directors or officer that may affect the coverage for which you are applying for)  ','{"S1P5D":{"Id":"S1P5D","text":"","code":"willisDOpFIVEd"}}','9029',''),
+(9035,'9','OPTIONAL','e','¿Cualquier persona propuesta como Asegurado o la Compañía, ¿conoce algún hecho, error o circunstancia que puedan dar lugar a futuras reclamaciones que caigan dentro del alcance del seguro solicitado?-(¿Does any person proposed for this insurance or the Company have knowledge of a fact and error or circumstances which may give rise to a claim under the coverage for which you are applying for?)','{"S1P5E":{"Id":"S1P5E","text":"","code":"willisDOpFIVEe"}}','9029',''),
+(9036,'9','SUB','',' En caso afirmativo a cualquier pregunta anterior, por favor dar detalles:-(If the answer is YES to any of the questions above please give details) ','{"S1P5E1":{"Id":"S1P5E1","text":"","code":"willisDOpFIVEeif"}}','9029',''),
+
+(9041,'9','OPTIONAL','6','¿Ha tenido la Compañía, durante los últimos tres (3) años, un Seguro de Responsabilidad de Administradores y directores?                                                            
+(¿Have the Company contracted a Directors and Officers Liability Insurance in the last 3 years?)','{"S1P7":{"Id":"S1P7","text":"","code":"willisDOpSIX"}}','',''),
+(9042,'9','NORMAL','a','Asegurador (Insurer)','{"S1P7A":{"Id":"S1P7A","text":"","code":"willisDOpSIXa"}}','9041',''),
+(9043,'9','NORMAL','b','Fecha de terminación de la póliza: (Expiry date of the policy)','{"S1P7B":{"Id":"S1P7B","text":"","code":"willisDOpSIXb"}}','9041',''),
+(9044,'9','NORMAL','c','Suma Asegurada (Sum Insured):','{"S1P7C":{"Id":"S1P7C","text":"","code":"willisDOpSIXc"}}','9041',''),
+
+(9045,'9','NORMAL','7','Suma Asegurada Requerida (Sum Insured Requested):','{"S1P8":{"Id":"S1P8","text":"","code":"willisDOpSeven"}}','','');
+
+INSERT INTO OPTIONS (idQUESTION,OPTIONTEXT,CREATEDAT) VALUES 
+('9008','Cotizada en Bolsa (Public)-Privada/ No Cotiza en Bolsa (Private)',''),
+('9013','yes-no',''),
+('9014','##yes-no',''),
+('9017','yes-no',''),
+('9020','yes-no',''),
+('9021','yes-no',''),
+('9022','yes-no',''),
+('9024','##yes-no',''),
+('9030','yes-no',''),
+('9031','yes-no',''),
+('9032','yes-no',''),
+('9034','yes-no',''),
+('9035','yes-no',''),
+('9041','yes-no','');

@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberEdge® Supplemental Questionnaire - Ransomware</title>
+    <style>
+        .custom-table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #000000;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Calibri', sans-serif;
+            color: #000;
+            background: #ffffff;
+            line-height: 14pt !important;
+        }
+
+        .page {
+            min-height: 27.94cm;
+            margin: 1cm auto;
+            box-sizing: border-box;
+            background: #fff;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-style: italic;
+        }
+
+        .content-footer {
+            position: absolute;
+            bottom: 0cm;
+            margin-top: 20cm;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 10pt;
+            background: black;
+        }
+
+        .content-footer .footer-divider {
+            border: none;
+            height: 4px;
+            width: 80%;
+            background-color: #aaa;
+            margin-bottom: 9pt;
+        }
+
+        .section-header {
+            background-color: #f0f0f0;
+            padding: 10px;
+            font-weight: bold;
+            margin-top: 35pt;
+            margin-bottom: 9pt;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 27pt;
+        }
+
+        td {
+            padding: 8px;
+            vertical-align: top;
+        }
+
+        .question-cell {
+            width: 7.7cm;
+        }
+
+        .number-cell {
+            width: 0.3cm;
+            text-align: center;
+        }
+
+        .answer-cell {
+            width: 7.3cm;
+        }
+
+        .answer-cell-half {
+            width: 3cm;
+        }
+
+        .checkbox {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #000;
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 0;
+        }
+
+        .spanish {
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .content {
+            font-size: 10pt;
+            line-height: 14pt;
+            padding-bottom: 2cm;
+            /* So the footer is not overlapped */
+        }
+
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .signature-line {
+            border-top: 1px solid #000;
+            width: 300px;
+            margin-top: 30px;
+            margin-bottom: 27pt;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .yes-no {
+            text-align: center;
+            width: 2.5cm;
+        }
+
+        .note-label {
+            font-weight: bold;
+            vertical-align: top;
+            padding-right: 8px;
+            white-space: nowrap;
+        }
+
+        .note-text {
+            padding: 8px;
+            border: 1px solid #000;
+        }
+
+        .note-blue {
+            background-color: #d9e5fa;
+        }
+
+        .note-cyan {
+            background-color: #00b0f0;
+            color: black;
+        }
+
+        a {
+            color: #000000;
+            text-decoration: underline;
+        }
+
+        .bluerow {
+            background: #00b0f0;
+            text-align: center;
+            color: #000000;
+        }
+
+
+        .skybluerow {
+            background: #d9e5fa;
+            text-align: center;
+            color: #000000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <table class="table-container">
+            <tr>
+                <td colspan="2" class="header" style="text-align: left; background-color:darkblue; color:white;">
+                    <strong>CyberEdge® Supplemental Questionnaire - Ransomware</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="row">
+                    This Supplemental Questionnaire is applicable to CyberEdge® coverage. As used herein,
+                    <strong>“Applicant”</strong> includes the <strong>Company</strong> applying for CyberEdge® coverage
+                    and its subsidiaries.
+                </td>
+            </tr>
+            <tr>
+                <td class="note-label">Note:</td>
+                <td class="note-text note-blue">
+                    Response boxes shaded this color require an individual selection, effectively, which response option
+                    best describes the <strong>Applicant</strong>.
+                    <div class="note-text note-cyan" style="margin-top: 5px;">
+                        Response boxes shaded this color represent questions where multiple responses may be selected.
+                        Note, these questions will also specify <a href="#">"select all that apply"</a>.
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <table>
+            <tbody>
+                <tr>
+                    <td>Full Name of Applicant:</td>
+                    <!---->
+                    <td style="width: 400px;" th:utext="${applicantName}"> </td>
+
+
+                </tr>
+            </tbody>
+        </table>
+
+        <table style="margin-top:9pt;">
+            <tbody>
+
+                <tr>
+                    <td rowspan="9">1</td>
+                    <td colspan="4">With respect to the Applicant's efforts to mitigate phishing,
+                        <u>select all that apply</u>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td colspan="3">Applicant provides security awareness training to employees
+                        at least annually.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qOneOpOne?:'', 'capacitación')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Applicant uses simulated phishing attacks to test employees'
+                        cybersecurity awareness at least annually.</td>
+                    <td class="yes-no  bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qOneOpOne?:'', 'utiliza')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Where the Applicant is conducting simulated phishing attacks,
+                        the success ratio was less than 15% on the last test (<u>less than
+                            15% </u> of employees were successfully phished).</td>
+                    <td class="yes-no  bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qOneOpOne?:'', '15')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Applicant 'tags' or otherwise marks e-mails from outside the
+                        organization.</td>
+                    <td class="yes-no  bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qOneOpOne?:'', 'etiqueta')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Applicant has a process to report suspicious e-mails to an
+                        internal security team to investigate.</td>
+                    <td class="yes-no  bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qOneOpOne?:'', 'reportar')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> None of the above.</td>
+                    <td class="yes-no  bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qOneOpOne?:'', 'ninguna')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional Commentary on efforts to mitigate phishing:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qOneOpSeven}"></td>
+                </tr>
+
+                <!-- Pregunta 2-->
+                <tr>
+                    <td rowspan="5">2</td>
+                    <td colspan="4">Does the Applicant have a documented process to respond to phishing
+                        campaigns
+                        (whether targeted specifically at the Applicant or not)? </td>
+                </tr>
+                <tr>
+                    <td colspan="3">Yes</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwoOpOne?:'', 'si')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">No</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwoOpOne?:'', 'no')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">If "Yes", please describe the principal steps to respond:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qTwoOpThree}"></td>
+                </tr>
+                <!-- Pregunta 3-->
+                <tr>
+                    <td rowspan="11">3</td>
+                    <td colspan="4">With respect to the Applicant's efforts to block potentially
+                        harmful websites and/or email, <u>select all that apply:</u> </td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b> uses an e-mail filtering solution which blocks known malicious
+                        attachments and suspicious file types,<u>including executables</u>.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qThreeOpOne?:'', 'adjuntos maliciosos')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b> uses an e-mail filtering solution which blocks suspicious
+                        messages based on their content or attributes of the sender.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qThreeOpOne?:'', 'remitente')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>uses a web-filtering solution which stops employees from
+                        visiting known malicious or suspicious web pages.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qThreeOpOne?:'', 'visiten')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>uses block uncategorized and newly registered domains using
+                        web proxies or DNS filters.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qThreeOpOne?:'', 'dns')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b> uses a web-filtering solution which blocks known malicious
+                        or suspicious downloads,<u>including executables</u>.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qThreeOpOne?:'', 'descargas')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant's </b> e-mail filtering solution has the capability to run
+                        suspicious attachments in a sandbox.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qThreeOpOne?:'', 'zona')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant's </b> web filtering capabilities are effective on all corporate
+                        assets, even if the corporate asset is not on a corporate network (e.g. assets
+                        are configured to utilize cloud-based web filters or require a VPN connection
+                        to browse the internet). </td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qThreeOpOne?:'', 'vpn')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">None of the above. </td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qThreeOpOne?:'', 'ninguna')} ? 'X' : ''"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">Additional commentary on efforts to block malicious websites and/or email:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qThreeOpNine}"></td>
+                </tr>
+                <!-- Pregunta 4-->
+                <tr>
+                    <td rowspan="7">4</td>
+                    <td colspan="4">With respect to authentication for <u>employees</u> who are remotely accessing
+                        the corporate network and any cloud-based services where sensitive data may reside
+                        (including VPN
+                        access, and cloud-based email and CRM; together 'remote access to corporate
+                        resources'), select the description which best reflects the <b>Applicant's</b> posture: <br />
+                        (As used herein, "multi-factor authentication" means authentication which uses
+                        at least two different types of the possible authentication factors (something you know,
+                        something you have, and something you are); the Applicant can provide further
+                        explanation below) </td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Remote access to corporate resources requires a valid username and
+                        password (single factor authentication).</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFourOpOne?:'', 'nombre')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Multi-factor authentication is in place for some types of remote access
+                        to corporate resources, but not all.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFourOpOne?:'', 'algunos')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Multi-factor authentication is required by policy for all remote access to
+                        corporate resources; all exceptions to the policy are documented.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFourOpOne?:'', 'exige')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b> does not provide remote access to employees.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFourOpOne?:'', 'empleados')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on authentication for employees:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qFourOpFive}"></td>
+                </tr>
+                <!-- Pregunta 5-->
+                <tr>
+                    <td rowspan="7">5</td>
+                    <td colspan="4">With respect to authentication for independent contractors and
+                        vendors who are remotely accessing the corporate network and any cloud-based
+                        services where sensitive data may reside (including VPN access, and cloud-based
+                        email and CRM; together 'remote access to corporate resources'), select
+                        the description which best reflects the Applicant's posture: <br />
+                        (The Applicant can provide further explanation below) </td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Remote access to corporate resources requires a valid username
+                        and password (single factor authentication).</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFiveOpOne?:'', 'nombre')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Multi-factor authentication is in place for some types of
+                        remote access to corporate resources, but not all.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFiveOpOne?:'', 'algunos')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Multi-factor authentication is required by policy for all remote access
+                        to corporate resources; all exceptions to the policy are documented.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFiveOpOne?:'', 'exige')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>does not provide remote access to independent
+                        contractors/vendors.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFiveOpOne?:'', 'contratistas')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on authentication for independent
+                        contractors/vendors:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qFiveOpFive}"></td>
+                </tr>
+                <!-- Pregunta 6-->
+                <tr>
+                    <td rowspan="6">6</td>
+                    <td colspan="4">Does the <b>Applicant's</b> multifactor authentication implementation also
+                        meet the criteria that the compromise of any single device will only compromise
+                        a single authenticator?<br />
+                        (For illustration: where authentication requires a password (knowledge) and a
+                        token (possession), this would not meet the criteria above if the token to prove
+                        possession is kept on a device the password is also entered into, exposing both
+                        if the device is compromised) </td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Not Applicable (<b>Applicant</b> does not use multi-factor authentication)</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSixOpOne?:'', 'aplicable')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> No; <b>Applicant's</b> multi-factor implementation does not meet the above
+                        criteria.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSixOpOne?:'', 'no cumple')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Yes; the <b>Applicant's </b> multi-factor implementation meets the above
+                        criteria.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSixOpOne?:'', 'sí')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on Multi-factor authentication implementation:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qSixOpFour}"></td>
+                </tr>
+                <!-- Pregunta 7-->
+                <tr>
+                    <td rowspan="7">7</td>
+                    <td colspan="4">With respect to the <b>Applicant's</b> endpoint security of
+                        workstations (desktops and laptops), <u> select all that apply</u>:</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant's </b>policy is that all workstations have antivirus with
+                        heuristic capabilities.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSevenOpOne?:'', 'antivirus')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> <b>Applicant </b>uses endpoint security tools with behavioral-detection
+                        and exploit mitigation capabilities.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSevenOpOne?:'', 'comportamiento')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>has an internal group which monitors the output of
+                        endpoint security tools and investigates any anomalies.
+                    </td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSevenOpOne?:'', 'supervisa')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> None of the above.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSevenOpOne?:'', 'ninguna')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on endpoint security capabilities:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qSevenOpFive}"></td>
+                </tr>
+                <!-- Pregunta 8-->
+                <tr>
+                    <td rowspan="7">8</td>
+                    <td colspan="4">With respect to monitoring the output of security tools,
+                        select the description which best reflects the <b>Applicant's</b> capabilities:
+                        (The Applicant can provide further explanation below)</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant</b> does not have staff dedicated to monitoring security
+                        operations (a "<b>Security Operations Center</b>").</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qEightOpOne?:'', 'no tiene')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> <b>Applicant </b>has a <b>Security Operations Center</b>, but it's not
+                        24/7 (can be internal or external).</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qEightOpOne?:'', 'no es 24')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>has a 24/7 monitoring of security operations by
+                        a 3rd party (such as a Managed Security Services Provider).</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qEightOpOne?:'', 'tercero')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b> has 24/7 monitoring of security operations internally.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qEightOpOne?:'', 'internamente')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on endpoint security capabilities:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qEightOpFive}"></td>
+                </tr>
+                <!-- Pregunta 9-->
+                <tr>
+                    <td rowspan="8">9</td>
+                    <td colspan="4">What is the <b>Applicant's</b> average time to triage and contain
+                        security incidents of workstations year to date? (The Applicant can provide
+                        further explanation below)</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant</b> does not track this metric/Do not know</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qNineOpOne?:'', 'rastrea')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> >30 minutes </td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qNineOpOne?:'', '<30')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> 30 minutes-2 hours</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qNineOpOne?:'', '30 minutos a 2')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">2-8 hours</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qNineOpOne?:'', '2 a 8')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> >8 hours</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qNineOpOne?:'', '>8')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on average time to remediate:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qNineOpSix}"></td>
+                </tr>
+                <!-- Pregunta 10-->
+                <tr>
+                    <td rowspan="7">10</td>
+                    <td colspan="4">With respect to access controls for each user's workstation,
+                        select the description which best reflects the Applicant's posture: <br />
+                        (The Applicant can provide further explanation below)</td>
+                </tr>
+                <tr>
+                    <td colspan="3"> No employees are in the Administrators' group or have local admin access
+                        to their workstations.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTenOpOne?:'', 'ningún')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant's </b> policy is that employees by default are not in the
+                        Administrators' group and do not have local admin access; all exceptions to the
+                        policy are documented. </td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTenOpOne?:'', 'excepciones')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Some of <b>Applicant's</b> employees are in the Administrators' group or
+                        are local admins.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTenOpOne?:'', 'algunos')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Do not know.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTenOpOne?:'', 'no sabe')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on access controls for workstations:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qTenOpFive}"></td>
+                </tr>
+
+                <!-- Pregunta 11-->
+                <tr>
+                    <td rowspan="9">11</td>
+                    <td colspan="4">With respect to protecting privileged credentials, <u>select all
+                            that apply</u> with respect to the <b>Applicant's</b> posture:</td>
+                </tr>
+                <tr>
+                    <td colspan="3"> System administrators at the <b>Applicant</b> have a unique, privileged credential
+                        for administrative tasks (separate from their user credentials for everyday
+                        access, email, etc.).</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qElevenOpOne?:'', 'credencial única')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Privileged accounts (including Domain Administrators) require multifactor
+                        authentication. </td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qElevenOpOne?:'', 'administradores de dominio')} ? 'X' : ''">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Privileged accounts are kept in a password safe that require the
+                        user to "check out" the credential (which is rotated afterwards).</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qElevenOpOne?:'', 'rota')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> There is a log of all privileged account use for at least the last thirty days.
+                    </td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qElevenOpOne?:'', 'registro')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Privileged Access Workstations (workstations that do not have access
+                        to internet or e-mail) are used for the administration of critical
+                        systems (including authentication servers/Domain Controllers).</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qElevenOpOne?:'', 'estaciones')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> None of the above.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qElevenOpOne?:'', 'ninguna')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on protecting privileged credentials:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qElevenOpSeven}"></td>
+                </tr>
+
+                <!-- Pregunta 12-->
+                <tr>
+                    <td rowspan="6">12</td>
+                    <td colspan="4">Indicate the <b>Applicant's</b> use of Microsoft Active Directory
+                        (across all domains/forests):</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Applicant does not use Microsoft Active Directory (indicate to the right)</td>
+                    <td class="yes-no skybluerow" th:utext="${qTwelveOpOne}"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Number of user accounts in the Domain Administrators group (include service
+                        accounts - if any - in this total):</td>
+                    <td class="yes-no skybluerow" th:utext="${qTwelveOpTwo}"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Number of service accounts in the Domain Administrators group: <br />
+                        ("service account" means a user account created specifically for an application
+                        or service to interact with other domain-joined computers):</td>
+                    <td class="yes-no skybluerow" th:utext="${qTwelveOpThree}"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on the number of Domain Administrators:</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qTwelveOpFour}"></td>
+                </tr>
+                <!-- Pregunta 13-->
+                <tr>
+                    <td rowspan="4">13</td>
+                    <td colspan="4">How many users have <u>persistent </u>privileged accounts for
+                        endpoints (servers and workstations)? <br />
+                        (For the purposes of this question, “privileged accounts” means entitlements
+                        to configure, manage and otherwise support these endpoints; users who must
+                        ‘check out’ credentials should not be included. The Applicant can provide
+                        further explanation below)</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Please enter an integer: </td>
+                    <td class="yes-no skybluerow" th:utext="${qThirteenOpOne}"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on the number of privileged accounts:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qThirteenOpTwo}"></td>
+                </tr>
+                <!-- Pregunta 14-->
+                <tr>
+                    <td rowspan="5">14</td>
+                    <td colspan="4">With respect to the security of externally facing systems, <u>select all
+                            that apply</u> with respect to the <b>Applicant's</b> posture:</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant</b> conducts a penetration test at least annually to
+                        assess the security of its externally facing systems.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFourteenOpOne?:'', 'penetración')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant</b> has a Web Application Firewall (WAF) in front of
+                        all externally facing applications, and it is in blocking mode. </td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFourteenOpOne?:'', 'waf')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant</b> uses an external service to monitor its attack
+                        surface (external/internet facing systems).</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFourteenOpOne?:'', 'superficie')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">None of the above.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFourteenOpOne?:'', 'ninguna')} ? 'X' : ''"></td>
+                </tr>
+
+                <!-- Pregunta 15-->
+                <tr>
+                    <td rowspan="8">15</td>
+                    <td colspan="4">What is the <b>Applicant's</b> target time to deploy 'critical'
+                        – the highest priority – patches (as determined by the <b>Applicant's </b>
+                        standards for when patches must be deployed)? </td>
+                </tr>
+                <tr>
+                    <td colspan="3"> There is no defined policy for when patches must be deployed.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFifteenOpOne?:'', 'directiva')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> Within 24 hours.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFifteenOpOne?:'', 'dentro de 24')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> 24-72 hours.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFifteenOpOne?:'', '24 a 72')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> 3-7 days.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFifteenOpOne?:'', '3 a 7')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> &gt;7 days.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qFifteenOpOne?:'', '> 7')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on target times for patching:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qFifteenOpSix}"></td>
+                </tr>
+                <!-- Pregunta 16-->
+                <tr>
+                    <td rowspan="8">16</td>
+                    <td colspan="4">What is the <b>Applicant's</b> year to date compliance with its
+                        own standards for deploying critical patches? <br />
+                        (The Applicant can provide further explanation below)</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>does not track this metric/Do not know</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSixteenOpOne?:'', 'not know')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> &gt;95%</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSixteenOpOne?:'', '>95')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> 90-95%</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSixteenOpOne?:'', '90 a 95')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> 80-90%</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSixteenOpOne?:'', '80 a 90')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> &lt;80% </td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSixteenOpOne?:'', '<80')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on target times for patching:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qSixteenOpSix}"></td>
+                </tr>
+                <!-- Pregunta 17-->
+                <tr>
+                    <td rowspan="8">17</td>
+                    <td colspan="4">With respect to the <b>Applicant's</b> network monitoring capabilities,
+                        <u> select all that apply:</u>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant</b> uses a security information and event monitoring (SIEM)
+                        tool to correlate the output of multiple security tools.
+                    </td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSeventeenOpOne?:'', 'siem')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> <b>Applicant </b>monitors network traffic for anomalous and potentially
+                        suspicious data transfers.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSeventeenOpOne?:'', 'tráfico')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>monitors for performance and storage capacity issues
+                        (such as high memory or processor usage, or no free disk space).</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSeventeenOpOne?:'', 'rendimiento')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>has tools to monitor for data loss (DLP) and they are in
+                        blocking mode.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSeventeenOpOne?:'', 'dlp')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> None of the above.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qSeventeenOpOne?:'', 'ninguna')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on network monitoring:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qSeventeenOpSix}"></td>
+                </tr>
+                <!-- Pregunta 18-->
+                <tr>
+                    <td rowspan="8">18</td>
+                    <td colspan="4">With respecting to limiting lateral movement,<u> select all that apply:</u>
+                        to the <b>Applicant's</b> posture: <br />
+                        (The Applicant can provide further explanation below) </td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant's</b> has segmented the network by geography (e.g. traffic between
+                        offices in different locations is denied unless required to support
+                        a specific business requirement).</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qEightteenOpOne?:'', 'geografía')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> <b>Applicant </b>has segmented the network by business function
+                        (e.g. traffic between asset supporting different functions – HR and
+                        Finance for example – is denied unless required to support a specific
+                        business requirement).</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qEightteenOpOne?:'', 'función')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>has implemented host firewall rules that prevent
+                        the use of RDP to log into workstations.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qEightteenOpOne?:'', 'rdp')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>has configured all service accounts to deny interactive
+                        logons.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qEightteenOpOne?:'', 'interactivos')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> None of the above.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qEightteenOpOne?:'', 'ninguna')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional comment on segmentation:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qEightteenOpSix}"></td>
+                </tr>
+                <!-- Pregunta 19-->
+                <tr>
+                    <td rowspan="3">19</td>
+                    <td colspan="4">Enter the date of the <b>Applicant's</b> last ransomware exercise;
+                        check the box if none has been conducted.</td>
+                </tr>
+                <tr>
+                    <td colspan="3">Date</td>
+
+                    <td class="yes-no skybluerow" th:if="${#strings.containsIgnoreCase(qNineteenOpOne?:'', 'fecha')}">
+                        <p style="margin: 0cm;" th:utext="${qNineteenOpOnenormal}"></p>
+                    </td>
+
+                    <td class="yes-no skybluerow"
+                        th:unless="${#strings.containsIgnoreCase(qNineteenOpOne?:'', 'fecha')}">
+                        <p></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="3"> No ransomware exercise has been conducted.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qNineteenOpOne?:'', 'no')} ? 'X' : ''"></td>
+                </tr>
+
+                <!-- Pregunta 20-->
+                <tr>
+                    <td rowspan="5">20</td>
+                    <td colspan="4">Does the <b>Applicant</b> have a documented plan
+                        to respond to ransomware of a 3rd party provider/vendor or customer?
+                        If yes, please indicate principle steps.</td>
+                </tr>
+                <tr>
+                    <td colspan="3">No</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyOpOne?:'', 'no')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">Yes</td>
+
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyOpOne?:'', 'si')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">3rd party ransomware response principle steps:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qTwentyOpThree}"></td>
+                </tr>
+                <!-- Pregunta 21-->
+                <tr>
+                    <td rowspan="7">21</td>
+                    <td colspan="4">With regards to verifying the efficacy of security controls,
+                        <u> select all that apply:</u>
+                        to the <b>Applicant</b>: <br />
+                        (The Applicant can provide further explanation below)
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant's</b> uses Breach and Attack Simulation (BAS)
+                        software to verify the effectiveness of security controls.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyoneOpOne?:'', 'bas')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> <b>Applicant </b>has an internal "red team" that tests security
+                        controls and response.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyoneOpOne?:'', 'red team')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>has engaged an external party to simulate threat
+                        actors and test security controls in the last year.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyoneOpOne?:'', 'externa')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> None of the above.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyoneOpOne?:'', 'ninguna')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on controls verification:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qTwentyoneOpFive}"></td>
+                </tr>
+                <!-- Pregunta 22-->
+                <tr>
+                    <td rowspan="5">22</td>
+                    <td colspan="4">With regards to disaster recovery capabilities,
+                        <u> select all that apply:</u>
+                        to the <b>Applicant</b>:
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"> A process for creating backups exists, but it is undocumented and/or ad hoc</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentytwoOpOne?:'', 'indocumentado')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> <b>Applicant </b>has a documented Disaster Recovery Policy,
+                        including standards for backups based on information criticality.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentytwoOpOne?:'', 'documentada')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">At least twice a year, Applicant tests its ability to restore different
+                        critical systems and data in a timely fashion from its backups.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentytwoOpOne?:'', 'dos veces')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b> None of the above.</b></td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentytwoOpOne?:'', 'ninguna')} ? 'X' : ''"></td>
+                </tr>
+
+                <!-- Pregunta 23-->
+                <tr>
+                    <td rowspan="6">23</td>
+                    <td colspan="4">What is the <b>Applicant's</b> Recovery Time Objective
+                        (RTO) for critical systems?
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant </b>does not have an RTO/Does not know</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyThreeOpOne?:'', 'rto')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">&lt;4 hours.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyThreeOpOne?:'', '<4') or #strings.containsIgnoreCase(qTwentyThreeOpOne?:'', '< 4')} ? 'X' : ''">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">4-24 hours.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyThreeOpOne?:'', '4-24') or #strings.containsIgnoreCase(qTwentyThreeOpOne?:'', '4 a 24')} ? 'X' : ''">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"> 1 to 2 days.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyThreeOpOne?:'', '1 to 2')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"> 2-7 days.</td>
+                    <td class="yes-no skybluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyThreeOpOne?:'', '2-7') or #strings.containsIgnoreCase(qTwentyThreeOpOne?:'', '2 a 7')} ? 'X' : ''">
+                    </td>
+                </tr>
+                <!-- Pregunta 24-->
+                <tr>
+                    <td rowspan="6">24</td>
+                    <td colspan="4">With respect to backup capabilities,
+                        <u> select all that apply:</u>
+                        to the <b>Applicant</b>:
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant's</b> backup strategy includes offline backups (can be stored on site)
+                    </td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyfourOpOne?:'', 'sitio') and not #strings.containsIgnoreCase(qTwentyfourOpOne?:'', 'fuera')} ? 'X' : ''">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3"> <b>Applicant's </b>backup strategy includes offline backups stored offsite</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyfourOpOne?:'', 'La estrategia de copia de seguridad del solicitante incluye copias de seguridad sin conexión almacenadas fuera del sitio')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Applicant's </b>h backups can only be accessed via an
+                        authentication mechanism outside of our corporate Active Directory.</td>
+                    <td class="yes-no bluerow"
+                        th:utext="${#strings.containsIgnoreCase(qTwentyfourOpOne?:'', ' acceder')} ? 'X' : ''">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary on backup capabilities:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qTwentyfourOpFour}"></td>
+                </tr>
+                <!-- Pregunta 25-->
+                <tr>
+                    <td rowspan="5">25</td>
+                    <td colspan="4">Does the <b>Applicant</b> have a policy that all portable
+                        devices use full disk encryption? </td>
+                </tr>
+                <tr>
+                    <td colspan="3">Yes</td>
+                    <td class="yes-no skybluerow" th:utext="${#strings.containsIgnoreCase(qTwentyfiveOpOne?:'', 'si')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">No</td>
+                    <td class="yes-no skybluerow" th:utext="${#strings.containsIgnoreCase(qTwentyfiveOpOne?:'', 'no')} ? 'X' : ''"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Additional commentary:</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" class="yes-no" th:utext="${qTwentyfiveOpThree}"></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <p>
+            <b>THIS SUPPLEMENTAL QUESTIONNAIRE IS INCORPORATED INTO AND MADE PART OF
+                ANY APPLICATION FOR CYBEREDGE COVERAGE BY THE APPLICANT. ALL REPRESENTATIONS
+                AND WARRANTIES MADE BY APPLICANT IN CONNECTION WITH SUCH APPLICATION ALSO APPLY
+                TO THE INFORMATION PROVIDED IN THIS SUPPLEMENTAL QUESTIONNAIRE.
+                <br /><br />
+
+                SHOULD INSURER ISSUE A POLICY, APPLICANT AGREES THAT SUCH POLICY IS ISSUED IN
+                RELIANCE UPON THE TRUTH OF THE STATEMENTS AND REPRESENTATIONS IN THIS
+                SUPPLEMENTAL QUESTIONNAIRE OR INCORPORATED BY REFERENCE HEREIN. ANY
+                MISREPRESENTATION, OMISSION, CONCEALMENT OR INCORRECT STATEMENT OF A MATERIAL
+                FACT, IN THIS SUPPLEMENTAL QUESTIONNAIRE, INCORPORATED BY REFERENCE OR OTHERWISE,
+                SHALL BE GROUNDS FOR THE RESCISSION OF ANY POLICY ISSUED.
+                <br /><br />
+                THE UNDERSIGNED HEREBY AGREES, WARRANTS, AND REPRESENTS THAT HE OR SHE IS A DULY
+                AUTHORIZED REPRESENTATIVE OF THE APPLICANT, AND IS FULLY AUTHORIZED TO ANSWER
+                AND MAKE STATEMENTS AND REPRESENTATIONS BY AND ON BEHALF OF THE APPLICANT.</b>
+        </p>
+
+        <div style=" padding-top:1.2cm">
+
+            <div style=" padding-left: 0.2cm ; margin-block: 24pt; margin-left: 0;">
+                <label style="display: inline-block; width: 70px;">Signed:</label>
+                <div style="border-bottom: 1px solid black; width: 250px; display: inline-block;"></div>
+                <div style="font-size: 12px; margin-left: 70px;">
+                    (Duly authorized representative, by and behalf of the <strong>Applicant</strong>)
+                </div>
+            </div>
+
+            <div style=" padding-left: 0.2cm ;margin-bottom: 20pt;margin-top: 12pt; margin-left: 0;">
+                <label style="display: inline-block; width: 70px;">Date:</label>
+                <div style="border-bottom: 1px solid black; width: 250px; display: inline-block;"></div>
+            </div>
+
+            <table style="width: 100%; border: none">
+                <tr style="border: none;">
+
+                    <td style=" vertical-align: top; border: none;">
+                        <label>Title:</label>
+                        <span
+                            style="display:inline-block; width: 250px; border-bottom: 1px solid black; margin-left: 1cm;"></span>
+                        <div style="font-size: 12px; margin-top: 4px; margin-left: 2cm;">
+                            (Must be signed by an authorized officer)
+                        </div>
+                    </td>
+
+                    <td style="padding-left: 20px; vertical-align: top; border: none;">
+                        <label>Organization:</label>
+                        <span
+                            style="display:inline-block; width: 200px; border-bottom: 1px solid black; margin-left: 0.1cm;"></span>
+                        <div style="font-size: 12px; margin-top: 4px; margin-left:4cm">
+                            (Organization's seal)
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

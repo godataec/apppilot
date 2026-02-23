@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seguro de Responsabilidad Directores &amp;
+        Administradores y Reembolso a la Compañía</title>
+    <style>
+        .footer-enumeration {
+            position: absolute;
+            bottom: 0;
+            right: 0.5cm;
+            width: auto;
+            height: auto;
+            background: none;
+            font-size: 10pt;
+            font-weight: 300;
+            color: #7a7a7a;
+        }
+
+        /* CSS Paged Media - Named pages for Flying Saucer */
+        @page {
+            size: A4;
+            margin: 3cm 2cm 2cm 2cm;
+            /* top right bottom left - extra top for header, extra bottom for page number */
+
+            @top-center {
+                content: "Willis";
+                font-size: 14pt;
+                text-align: right;
+                padding-right: 1cm;
+                font-family: "Bodoni MT";
+                font-size: 30pt;
+                font-weight: bold;
+                font-style: normal !important;
+                margin-top: 0.25cm;
+                color: #000;
+            }
+
+            @bottom-center {
+                content: counter(page);
+                background: none;
+                font-size: 10pt;
+                font-weight: 300;
+                color: #7a7a7a;
+                text-align: right;
+            }
+        }
+
+        /* First page (cover) - no header, no page number */
+        @page :first {
+            margin: 2cm;
+
+            @top-center {
+                content: normal;
+            }
+
+            @bottom-center {
+                content: normal;
+            }
+        }
+
+        /* Apply named pages */
+        .cover {
+            page: cover-page;
+            page-break-after: always;
+        }
+
+        .content {
+            /* Uses default @page with header and page numbers */
+        }
+
+        .custom-table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .question-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 0 4.5pt 0;
+            border: none;
+        }
+
+        .question-table td {
+            border: none;
+            padding: 0;
+            vertical-align: top;
+        }
+
+        th,
+        td {
+            border: 1px solid #000000;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Calibri", sans-serif;
+            font-size: 11pt;
+            color: #000;
+            background: #ffffff;
+            line-height: 14pt !important;
+        }
+
+
+        .page .watermark {
+            position: relative;
+            transform: translate(-50%, -50%) rotate(-56deg);
+            font-size: 100pt;
+            font-weight: bold;
+            font-weight: 50;
+            color: #7a7a7a63;
+            user-select: none;
+            white-space: nowrap;
+            z-index: 0;
+            align-self: center;
+            justify-content: center;
+            align-items: center;
+            margin-right: 5cm;
+            padding-top: 50%;
+            padding-right: 10cm;
+
+        }
+
+        .page {
+            box-sizing: border-box;
+            line-height: 14pt !important;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-style: italic;
+        }
+
+
+        .section-header {
+            background-color: #f0f0f0;
+            padding: 10px;
+            font-weight: bold;
+            margin-top: 35pt;
+            margin-bottom: 9pt;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 27pt;
+        }
+
+        td {
+            padding: 8px;
+            vertical-align: top;
+        }
+
+        .question-cell {
+            width: 7.7cm;
+        }
+
+        .number-cell {
+            width: 0.3cm;
+            text-align: center;
+        }
+
+        .answer-cell {
+            width: 7.3cm;
+        }
+
+        .answer-cell-half {
+            width: 3cm;
+        }
+
+        /* Contenedor del checkbox */
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* La X — puedes moverla con top/left/right/bottom */
+        .checkboxmark {
+            position: absolute;
+            font-size: 14px;
+            top: 0%;
+            left: 30%;
+        }
+
+        /* Espaciado general de cada fila si/no */
+        .answer-row {
+            margin-bottom: 4px;
+            align-items: center;
+        }
+
+        .spanish {
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .content {
+            font-size: 10pt;
+            line-height: 14pt;
+            /* padding-bottom: 2cm;
+            padding-top: 3cm;*/
+            /* So the footer is not overlapped */
+        }
+
+        .content-header {
+            position: relative;
+            font-family: 'Calibri', sans-serif !important;
+            font-weight: bold;
+            font-size: 11pt;
+            padding-top: 1cm;
+            padding-left: 0;
+        }
+
+        .content-header1 {
+            position: relative;
+            font-family: 'Calibri', sans-serif !important;
+            font-weight: bold;
+            font-size: 11pt;
+            padding-left: 0;
+            text-align: center;
+        }
+
+        .content-question {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Calibri', sans-serif !important;
+            font-size: 11pt;
+            padding-left: 0;
+        }
+
+        .question {
+            /*display: flex;*/
+            flex-direction: row;
+            /*white-space: nowrap;*/
+            gap: 5pt;
+            margin-bottom: 10pt;
+        }
+
+        .answer {
+            margin-left: 1cm;
+            display: flex;
+            flex-direction: row;
+            gap: 5pt;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .signature-line {
+            border-top: 1px solid #000;
+            width: 300px;
+            margin-top: 30px;
+            margin-bottom: 27pt;
+        }
+
+        /* -------------------- */
+        /* Cover (Portada) */
+        /* -------------------- */
+        .cover {
+            text-align: left;
+            position: relative;
+            font-family: 'Times New Roman', Times, serif;
+            padding-top: 2cm;
+            padding-left: 0;
+            min-height: 23cm;
+            margin: auto;
+        }
+
+        .cover .cover-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5cm;
+            height: 11.25cm;
+        }
+
+        .cover .cover-header {
+            font-size: 18pt;
+            margin-bottom: 9pt;
+        }
+
+        .cover .cover-title {
+            font-size: 18pt;
+            margin-bottom: 9pt;
+            line-height: 22pt;
+        }
+
+        .cover .cover-divider {
+            border: none;
+            height: 2px;
+            width: 150px;
+            margin: 10px 0;
+        }
+
+        .cover .cover-sub {
+            font-size: 11pt;
+            margin-bottom: 9pt;
+        }
+
+        .cover .cover-footer {
+            position: absolute;
+            right: 1cm;
+            font-size: 10pt;
+            text-align: left;
+            opacity: 50%;
+        }
+
+
+        /*Img - Willis*/
+        .header {
+            position: absolute;
+            top: 0.5cm;
+            right: 0.5cm;
+            width: 3.14cm;
+            height: 1.27cm;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2px;
+        }
+
+
+        /*font style isnt working*/
+        .header p {
+            font-family: "Californian FB", serif;
+            font-size: 30pt;
+            font-weight: bold;
+            font-style: normal !important;
+            margin-top: 0.25cm;
+        }
+
+
+
+        span {
+            display: block;
+            margin-bottom: 9pt;
+        }
+
+        .footer-cover {
+            position: absolute;
+            bottom: 0.5cm;
+            right: 0.5cm;
+            width: 3.40cm;
+            height: 4.2cm;
+        }
+
+        .footer-cover p {
+            margin: 0;
+            line-height: 1.2;
+            font-style: normal;
+        }
+
+        .footer-cover p.finex-info {
+            font-size: 8pt;
+            font-style: normal !important;
+        }
+
+        .footer-cover p.finex-info .finex-name {
+            font-weight: bold;
+            font-style: normal !important;
+        }
+
+        .footer-cover p.reg-info {
+            font-size: 7pt;
+            font-style: italic;
+            margin-top: 2pt;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="cover">
+
+
+        <div class="header">
+            <p>Willis</p>
+        </div>
+
+        <div class="cover-container">
+            <div class="cover-title">Seguro de Responsabilidad Directores &amp;
+                Administradores y Reembolso a la Compañía. (Cuestionario de D&amp;O) </div>
+            <div class=".cover-sub">
+                <p><i>Este es un cuestionario para una póliza relacionada solamente
+                        a reclamaciones hechas en contra del Asegurado durante la vigencia de
+                        dicha póliza (Claims Made).</i></p>
+                <p><i>Una copia del más reciente reporte financiero anual junto con reportes
+                        periódicos debe ser presentados con este cuestionario.</i></p>
+                <p><i>Favor responder todas las preguntas completamente (si el espacio no es
+                        suficiente, favor usar una hoja por separado). <br /></i></p>
+                <p><i>Favor marcar las casillas cuando sea necesario.</i></p>
+
+                <div class="footer-cover">
+                    <p class="finex-info">The Willis Building, 51 Lime St, EC3M 7DQ.
+                        London - United Kingdom.
+                    <p class="finex-name">FINEX INTERNATIONAL</p>
+                    Tel: + 44 (0) 20 3124 6646
+                    Switchboard +44 (0)20 3124 6000
+                    Fax: +44 (0) 20 3124 6488
+
+                    </p>
+
+                    <p class="reg-info"><i> A Lloyd's broker and member of the General Insurance Standards Council.
+                            Registered office
+                            Ten Trinity Square,
+                            London EC3P 3AX. Registered number
+
+
+                        </i></p>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="page">
+
+        <div class="content">
+
+            <div class="header">
+                <p>Willis</p>
+                <!--<img src="headerLogo.png" alt="Logo willis" />-->
+            </div>
+
+            <div class="content-header1">
+                <strong>CUESTIONARIO DE RESPONSABILIDAD CIVIL DE DIRECTORES Y ADMINISTRADORES </strong>
+                <i>(DIRECTORS AND OFFICERS LIABILITY PROPOSAL FORM) </i>
+            </div>
+            <p>1.</p>
+            <div class="content-question">
+                <div class="question">
+                    a) Nombre de la Sociedad Principal
+                    <strong><i>(Name of the firm):</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpONEa}" th:text="${willisDOpONEa}"></span>
+                </div>
+            </div>
+            <div class="content-question">
+                <div class="question">
+                    b) Domicilio Social
+                    <strong><i>(Address):</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpONEb}" th:text="${willisDOpONEb}"></span>
+                </div>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    c) Descripción completa de la actividad
+                    <strong><i>(Description of the activity):</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpONEc}" th:text="${willisDOpONEc}"></span>
+                </div>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    d) Fecha de constitución
+                    <strong><i>(Date of constitution):</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpONEd}" th:text="${willisDOpONEd}"></span>
+                </div>
+            </div>
+
+
+            <div class="content-question">
+                <div class="question">
+                    e) Desglose en % el volumen de las ventas realizadas en el último ejercicio
+                    <strong><i>(Breakdown in % of the sales made during the last accounting period):</i></strong>
+                </div>
+                <div class="answer" style="flex-direction: column;">
+                    <span th:if="${willisDOpONEe}" th:text="${willisDOpONEe}"></span>
+                    <div>- País domicilio <i>(Home country)</i> <span th:if="${willisDOpONEeHome}"
+                            th:text="${willisDOpONEeHome} + '%'"></span></div>
+                    <div>- Europa <i>(Europe)</i> <span th:if="${willisDOpONEeEurope}"
+                            th:text="${willisDOpONEeEurope} + '%'"></span></div>
+                    <div>- EEUU <i>(U.S.A)</i> <span th:if="${willisDOpONEeUSA}"
+                            th:text="${willisDOpONEeUSA} + '%'"></span></div>
+                    <div>- Resto del mundo <i>(Rest of the World)</i> <span th:if="${willisDOpONEeWorld}"
+                            th:text="${willisDOpONEeWorld} + '%'"></span></div>
+                </div>
+            </div>
+            <p>2.</p>
+            <div class="content-question">
+                <div class="question">
+                    a) Es la Compañía
+                    <strong><i>(Is the company):</i></strong>
+                </div>
+
+                <div class="answer">
+                    <p th:if="${willisDOpTWOaPublic != null}" th:text="${willisDOpTWOaPublic}"></p>
+                </div>
+
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    b) Número total de accionistas
+                    <strong><i>(Total No. of Shareholders):</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpTWOb}" th:text="${willisDOpTWOb}"></span>
+                </div>
+            </div>
+            <div class="content-question">
+                <div class="question">
+                    c) Número total de acciones (en %) propiedad de los Administradores y directores:
+                    <strong><i>(Number of shares in % in hands of Directors and Officers):</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpTWOc}" th:text="${willisDOpTWOc} + '%'"></span>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="page">
+        <div class="content">
+            <div class="header">
+                <p>Willis</p>
+                <!--<img src="headerLogo.png" alt="Logo willis" />-->
+            </div>
+            <div class="content-question">
+                <div class="question">
+                    d) Detalles de cualquier accionista de la sociedad con más del 5%
+                    <strong><i>(Details of any shareholder with more than 5% paid up capital):</i></strong>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre<br /><i>(Name)</i></th>
+                            <th>Porcentaje de Acciones<br /><i>(% of shares)</i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:if="${tables['willisDOpTHREEDtable'] != null}">
+                            <tr th:each="rowKey : ${tables['willisDOpTHREEDtable'].rowKeys}">
+                                <td th:each="col : ${tables['willisDOpTHREEDtable'].columns}">
+                                    <span th:text="${col.rows.get(rowKey)} ?: ''">—</span>
+                                </td>
+                            </tr>
+                        </th:block>
+                        <th:block th:unless="${tables['willisDOpTHREEDtable'] != null}">
+                            <tr>
+                                <td colspan="2">No data available</td>
+                            </tr>
+                        </th:block>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    e) ¿En los últimos 5 años, se ha realizado cualquier emisión de títulos valores/acciones?
+                    <strong><i>(In the past 5 years, has there been any issue of securities/shares?):</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEEYes != null and willisDOpTHREEEYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEEYes != null and !willisDOpTHREEEYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="content-question">
+                <div class="question">
+                    f) ¿Se cotizan las acciones públicamente?
+                    <strong><i>(Are shares publicly traded?):</i></strong>
+                </div>
+
+
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEFYes != null and willisDOpTHREEFYes == '##yes' ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEFYes != null and willisDOpTHREEFYes == '##yes' ? '' : 'x'}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="content-question" style="margin-left: 1cm">
+                    <div class="question">
+                        <div>En caso afirmativo, por favor confirmar la(s) Bolsa(s) de Valores en que se cotizan:</div>
+                        <strong><i>(If yes, please specify the stock exchange(s) on which they are listed):</i></strong>
+                    </div>
+                    <div class="answer">
+                        <span th:if="${willisDOpTHREEFYes}" th:text="${willisDOpTHREEFYesnormal}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="content-question">
+                <div class="question">
+                    g) Número total de acciones emitidas
+                    <strong><i>(Total number of shares issued):</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpTHREEG}" th:text="${willisDOpTHREEG}"></span>
+                </div>
+            </div>
+            <div class="content-question">
+                <div class="question">
+                    h) ¿Ha revelado la sociedad o alguna de sus subsidiarias públicamente que pretende hacer una oferta
+                    pública de acciones durante el año próximo?
+                    <div class="spanish">
+                        (Has the company or any of its subsidiaries publicly revealed that it is intending a public
+                        offering of securities within the next year?)
+                    </div>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEHYes != null and willisDOpTHREEHYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEHYes != null and !willisDOpTHREEHYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+                <div class="content-question" style="margin-left: 1cm">
+                    <div class="question">
+                        En caso afirmativo a cualquiera de las preguntas anteriores, por favor dé detalles completos
+                        <strong><i>(If yes to any previous question, please give details):</i></strong>
+                    </div>
+                    <div class="answer">
+                        <span th:text="${willisDOpTHREEdetails}"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="page">
+        <div class="content">
+            <div class="header">
+                <p>Willis</p>
+                <!--<img src="headerLogo.png" alt="Logo willis" />-->
+            </div>
+
+            <p>3.</p>
+            <div class="content-question">
+                <div class="question">
+                    a) ¿En los últimos 5 años, ha tenido lugar cualquier absorción, fusión, adquisición o cambio de
+                    control?
+                    <strong><i>(In the past 5 years, has there any acquisition, merger, take-over, etc ?)</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEaYes != null and willisDOpTHREEaYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEaYes != null and !willisDOpTHREEaYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    b) ¿Ha revelado la sociedad o alguna de sus subsidiarias públicamente que en el momento actual
+                    tienen en consideración cualquier absorción, fusión, adquisición y/o cambio de control durante el
+                    próximo año?
+                    <strong><i>(Has the company or any of its subsidiaries publicly announced any merger, acquisition or
+                            take-over within the next year?)</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEbYes != null and willisDOpTHREEbYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEbYes != null and !willisDOpTHREEbYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    c) ¿La sociedad o alguna de sus subsidiarias está actualmente participando en o considerando
+                    cualquier reestructuración o reorganización financiera o legal?
+                    <strong><i>(Is the company or any of its subsidiaries currently involved in or considering any
+                            restructuring or legal or financial reorganisation or filing for bankruptcy?)</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEcYes != null and willisDOpTHREEcYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpTHREEcYes != null and !willisDOpTHREEcYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <p>4.</p>
+
+            <div class="content-question">
+                <div class="question">
+                    <strong>EXPOSICION EN LOS ESTADOS UNIDOS DE AMERICA (USA exposure)</strong>
+                    <strong><i>(Does the company or any of its subsidiaries have any exposure in the USA? If yes, please
+                            give details)</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFOURYes != null and willisDOpFOURYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFOURYes != null and !willisDOpFOURYes ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    a) Activos totales en USA
+                    <strong><i>(Total assets in U.S.A.):</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpFOURa}" th:text="${willisDOpFOURa}"></span>
+                </div>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    b) Porcentaje de activos totales de la compañía en USA
+                    <strong><i>(Percentage of the company's total assets in U.S.A.):</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpFOURb}" th:text="${willisDOpFOURb}">%</span>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="page">
+        <div class="content">
+
+            <div class="header">
+                <p>Willis</p>
+                <!--<img src="headerLogo.png" alt="Logo willis" />-->
+            </div>
+
+
+            <div class="content-question">
+                <div class="question">
+                    c) Por favor, liste las filiales en USA
+                    <strong><i>(USA Subsidiaries):</i></strong>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre<br /><i>(Name)</i></th>
+                            <th>Porcentaje de Acciones<br /><i>(% of shares)</i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:if="${tables['willisDOpFOURCtable'] != null}">
+                            <tr th:each="rowKey : ${tables['willisDOpFOURCtable'].rowKeys}">
+                                <td th:each="col : ${tables['willisDOpFOURCtable'].columns}">
+                                    <span th:text="${col.rows.get(rowKey)} ?: ''">—</span>
+                                </td>
+                            </tr>
+                        </th:block>
+                        <th:block th:unless="${tables['willisDOpFOURCtable'] != null}">
+                            <tr>
+                                <td colspan="2">No data available</td>
+                            </tr>
+                        </th:block>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    5. Confirmar si la Compañía o cualquier persona propuesta como Asegurado, se ha visto involucrado
+                    en:
+                    <strong><i>(Please confirm if the Company or anyone for whom insurance is intended has been involved
+                            in the following:)</i></strong>
+                </div>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    a) Litigios antimonopolio
+                    <strong><i>(Any antitrust litigations)</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEa != null and willisDOpFIVEa ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEa != null and !willisDOpFIVEa ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+
+
+
+
+            <div class="content-question">
+                <div class="question">
+                    b) Derechos de autor o patente
+                    <strong><i>(Copyright or Patent litigation):</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEb != null and willisDOpFIVEb ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEb != null and !willisDOpFIVEb ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    c) “Representative Actions” or “class actions” o demanda judicial derivativa
+                    <strong><i>(Any representative actions, class actions or derivative suits)</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEc != null and willisDOpFIVEc ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEc != null and !willisDOpFIVEc ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    En caso afirmativo a cualquier pregunta anterior, por favor dar detalles:
+                    <strong><i>(If the answer is YES to any of the questions above please give details)</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpFIVEcIF}" th:text="${willisDOpFIVEcIF}"></span>
+                </div>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    d) ¿Hay algún litigio, actualmente pendiente, en contra de la Compañía o cualquier de sus directores
+                    o administradores que pueda afectar el seguro solicitado?
+                    <strong><i>(Is there any material litigation currently pending against the company or any directors
+                            or officers that may affect the coverage for which you are applying?)</i></strong>
+                </div>
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEd != null and willisDOpFIVEd ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEd != null and !willisDOpFIVEd ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+
+    <div class="page">
+
+        <div class="content">
+            <div class="header">
+                <p>Willis</p>
+                <!--<img src="headerLogo.png" alt="Logo willis" />-->
+            </div>
+
+
+            <div class="content-question">
+                <div class="question">
+                    e) ¿Cualquier persona propuesta como Asegurado o la Compañía, ¿conoce algún hecho, error o
+                    circunstancia que puedan dar lugar a futuras reclamaciones que caigan dentro del alcance del seguro
+                    solicitado?
+                    <strong><i>(Does any person proposed for this insurance or the Company have knowledge of a fact,
+                            error, or circumstance which may give rise to a claim under the coverage for which you are
+                            applying?)</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEe != null and willisDOpFIVEe ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpFIVEe != null and !willisDOpFIVEe ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    En caso afirmativo a cualquier pregunta anterior, por favor dar detalles:
+                    <strong><i>(If the answer is YES to any of the questions above please give details)</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpFIVEeif}" th:text="${willisDOpFIVEeif}"></span>
+                </div>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    6. ¿Ha tenido la Compañía, durante los últimos tres (3) años, un Seguro de Responsabilidad de
+                    Administradores y directores?
+                    <strong><i>(Have the Company contracted a Directors and Officers Liability Insurance in the last 3
+                            years?)</i></strong>
+                </div>
+
+                <div class="answer">
+
+                    <!-- SI / YES -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpSIX != null and willisDOpSIX ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">SI/YES</span>
+                    </div>
+
+                    <!-- NO -->
+                    <div class="d-flex answer-row">
+                        <span class="checkbox">
+                            <span class="checkboxmark" th:text="${willisDOpSIX != null and !willisDOpSIX ? 'x' : ''}">
+                            </span>
+                        </span>
+                        <span class="es">NO</span>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    a) Asegurador
+                    <strong><i>(Insurer)</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpSIXa}" th:text="${willisDOpSIXa}"></span>
+                </div>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    b) Fecha de terminación de la póliza:
+                    <strong><i>(Expiry date of the policy)</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpSIXb}" th:text="${willisDOpSIXb}"></span>
+                </div>
+            </div>
+
+            <div class="content-question">
+                <div class="question">
+                    c) Suma Asegurada
+                    <strong><i>(Sum Insured)</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpSIXc}" th:text="${willisDOpSIXc}"></span>
+                </div>
+            </div>
+
+
+
+            <div class="content-question">
+                <div class="question">
+                    7. Suma asegurada requerida
+                    <strong><i>(Sum insured requested)</i></strong>
+                </div>
+                <div class="answer">
+                    <span th:if="${willisDOpSeven}" th:text="${willisDOpSeven}"></span>
+                </div>
+            </div>
+
+            <div class="cover-footer">
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="page">
+
+        <div class="content">
+            <div class="header">
+                <p>Willis</p>
+                <!--<img src="headerLogo.png" alt="Logo willis" />-->
+            </div>
+
+
+            <p><em>El abajo firmante declara que en lo mejor de su conocimiento lo declarado
+                    es verdad.</em></p>
+            <p>
+                <em>
+                    La firma de la solicitud no compromete al firmante a formalizar el seguro,
+                    pero se acuerda que esta solicitud será la base del contrato si se emitiera
+                    una póliza, y que esta solicitud se considerará unida y formara parte de la
+                    póliza emitida. Se acuerda que en caso de que, antes de la fecha de efecto
+                    de la póliza, haya cualquier cambio sustancial en las respuestas a las
+                    cuestiones contenidas, el solicitante lo notificará al asegurador y que
+                    este podrá, según su criterio, modificar o retirar cualquier previa cotización.
+                </em>
+            </p>
+
+            <p><strong>FIRMADO (SIGNATURE):<div class="signature-line"></div>CARGO (POSITION):
+                    VICEPRESIDENTE EJECUTIVO</strong><br />(Debe ser firmado por el Presidente o Consejero
+                Delegado de la Sociedad Principal) <br />
+                <em><b>(Must be signed by the Chairman of the Board or the
+                        Managing Director of the principal company) </b></em>
+            </p>
+
+            <p><b>LUGAR Y FECHA: <span th:utext="${printDate}"></span></b></p>
+
+        </div>
+
+
+
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYBER RISK - Cuestionario</title>
+  <style>
+    /* CSS Paged Media - Named pages for Flying Saucer */
+
+    /* Running header element */
+    #running-header {
+      -fs-move-to-flow: header-flow;
+      text-align: right;
+    }
+
+    #running-header img {
+      width: 4.17cm;
+      display: inline-block;
+    }
+
+    @page cover-page {
+      size: A4;
+    }
+
+    @page content-page {
+      size: A4;
+      margin: 3cm 2cm 2cm 2cm;
+      /* Extra top margin for header, extra bottom for footer */
+
+      @top-center {
+        content: -fs-flow(header-flow);
+        vertical-align: right;
+        padding-left: 13cm;
+      }
+
+      @bottom-center {
+        content: "lockton.com | © 2021 Lockton Perú. Todos los derechos reservados.";
+        font-size: 8pt;
+        color: gray;
+        border-top: 1px solid #aaa;
+        width: 90%;
+      }
+    }
+
+    /* Apply named pages to elements */
+    .cover {
+      page: cover-page;
+    }
+
+    .content {
+      page: content-page;
+    }
+
+    /* Estilos generales */
+    body {
+      font-family: 'Times New Roman', serif;
+      margin: 0;
+      padding: 0;
+      line-height: 14pt !important;
+    }
+
+    .m-1 {
+      margin-top: 0.5rem;
+    }
+
+    .p-1 {
+      padding: 3px !important;
+    }
+
+    .page {
+      box-sizing: border-box;
+    }
+
+    .content {
+      font-size: 12pt;
+      line-height: 14pt;
+      width: 95%;
+    }
+
+    /* Clases para contenedores flexibles */
+    .d-flex {
+      display: flex;
+    }
+
+    .flex-column {
+      flex-direction: column;
+    }
+
+    /* Clases para idioma y estilo */
+    .es {
+      font-weight: bold;
+      margin: 0;
+      padding: 0;
+    }
+
+    .en {
+      margin: 0;
+      padding: 0;
+      font-weight: normal;
+    }
+
+    p {
+      margin-bottom: 9pt !important;
+    }
+
+
+    /* Portada (Cover) */
+    .cover .cover-container {
+      background-color: #808080;
+      width: 14.25cm;
+      padding-top: 2cm;
+      margin-top: 2cm;
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: column;
+      color: white;
+      gap: 0.5cm;
+      height: 9.65cm;
+    }
+
+    .cover .cover-title {
+      margin-top: 2cm;
+      font-size: 35pt;
+      margin-bottom: 1cm;
+      color: black;
+      margin-left: 1cm;
+    }
+
+    .cover .cover-subtitle {
+      font-size: 20pt;
+      font-style: italic;
+      letter-spacing: -0.5pt;
+      margin-bottom: 1cm;
+      margin-left: 1cm;
+      color: black;
+    }
+
+    /* Celeste horizontal line */
+    .cover .cover-divider {
+      border: none;
+      height: 2px;
+      margin-top: 0.5cm;
+      margin-bottom: 0.5cm;
+      background-color: #00bfff;
+      width: 150px;
+      margin: 10px 0;
+      margin-left: 1cm;
+      color: black;
+
+    }
+
+    .cover .cover-date {
+      font-size: 10pt;
+      margin-bottom: 9pt;
+      margin-top: 0.6cm;
+      margin-left: 1cm;
+      color: black;
+    }
+
+    /*Image INSERT IMAGE FOOTER COVER*/
+    .cover .cover-footer {
+      position: relative;
+      bottom: -10cm;
+      right: -15cm;
+      font-size: 10pt;
+      text-align: left;
+      width: 4.17cm;
+      height: 2.42cm;
+      opacity: 50%;
+
+    }
+
+    /*Image HEADER*/
+    /* Encabezado y Pie de Página */
+    .header {
+      margin-left: auto;
+      width: 4.15cm;
+      height: 2.77cm;
+      font-size: 10pt;
+      /*margin-right: 20cm;
+      margin-left: 20cm;*/
+      text-align: right;
+      opacity: 50%;
+
+    }
+
+    /* Sección de encabezados de cada parte */
+    .section-header {
+      padding-top: 0.5cm;
+      padding: 5px;
+      margin-top: 0.2cm;
+      margin-bottom: 10pt;
+      font-weight: bold;
+      text-align: center;
+
+    }
+
+    /* Tablas */
+    table {
+      width: 90%;
+      border-collapse: collapse;
+      margin-bottom: 20pt;
+    }
+
+    th,
+    td {
+      border: 1px solid;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .yes-no {
+      text-align: center;
+    }
+
+    /* checkbox style*/
+    .checkbox {
+        width: 15px;
+        height: 15px;
+        border: 1px solid #000;
+        display: inline-block;
+        justify-content: center;
+        align-items: center;
+        line-height: 14px;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        box-sizing: border-box;
+    }
+
+    .checkboxmark {
+        padding-left: 2px;
+    }
+
+
+
+
+
+    /* New table-based question layout */
+    .question-table {
+      width: 98%;
+      border-collapse: collapse;
+      margin: 0 0 15pt 0;
+      border: none;
+
+    }
+
+    .question-table td {
+      border: none;
+      padding: 0;
+      vertical-align: top;
+    }
+
+    .question-number {
+      font-weight: bold;
+      width: 1.5em;
+      text-align: left;
+      padding-right: 0.5em;
+    }
+
+    .question-content {
+      width: calc(100% - 1.5em);
+    }
+
+
+    .table-aditional {
+      width: 95%;
+    }
+
+    /* New table-based question layout */
+    .question-table1 {
+      width: 98%;
+      border-collapse: collapse;
+      border: none;
+      margin-bottom: 0;
+    }
+
+    .question-table1 td {
+      vertical-align: top;
+      padding: 0;
+
+    }
+
+    .question-table1 td.question-number1 {
+      border: none;
+      padding-right: 0.5em;
+      width: calc(100% - 0.1em);
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .question-content1 {
+      width: calc(100% - 0.1em);
+      border: none;
+      padding-left: 1cm;
+      ;
+
+    }
+
+    .question-table1 td p,
+    .question-table1 th p {
+      margin-right: 0.5cm;
+      padding: 0cm;
+      width: 100%;
+    }
+
+
+    .no-border-table,
+    .no-border-table tr,
+    .no-border-table td {
+      border: none;
+    }
+
+    /* Clase para la línea inferior */
+    .line-field {
+      border-bottom: 1px solid #000 !important;
+      padding-right: 200px;
+    }
+
+
+    /* End new styles */
+  </style>
+</head>
+
+<body>
+
+  <!-- Page 1: Cover -->
+  <div class="page cover">
+
+    <div class="cover-container">
+      <div class="cover-title">CYBER RISK</div>
+      <div class="cover-subtitle">Cuestionario</div>
+      <hr class="cover-divider" />
+      <div class="cover-date">Fecha del proceso</div>
+    </div>
+
+    <div class="cover-footer">
+      <img src="lockton.jpg" alt="Pie de página Portada" style="width: 4.17cm;" />
+    </div>
+
+  </div>
+
+  <!-- Página de contenido -->
+
+
+  <!--Page 2-->
+  <div class="page content">
+
+    <!-- Sección 1: INFORMACION GENERAL -->
+    <div class="section-header">
+      1. INFORMACION GENERAL/
+      GENERAL INFORMATION
+    </div>
+    <table class="table-aditional">
+      <tr>
+        <td>
+          <p class="es">Empresa Solicitante:</p>
+          <p class="en">Company or trading name</p>
+        </td>
+        <td class="answer" th:utext="${Cyberrisks1p1a}"></td>
+      </tr>
+      <tr>
+        <td>
+          <p class="es">CIF:</p>
+          <p class="en">Tax ID Code</p>
+        </td>
+        <td class="answer" th:utext="${Cyberrisks1p1b}"></td>
+      </tr>
+      <tr>
+        <td>
+          <p class="es">Domicilio social:</p>
+          <p class="en">Address</p>
+        </td>
+        <td class="answer" th:utext="${Cyberrisks1p1c}"></td>
+      </tr>
+      <tr>
+        <td>
+          <p class="es">E-mail:</p>
+          <p class="en">E-mail</p>
+        </td>
+        <td class="answer" th:utext="${Cyberrisks1p1d}"></td>
+      </tr>
+      <tr>
+        <td>
+          <p class="es">Página web:</p>
+          <p class="en">Web page</p>
+        </td>
+        <td class="answer" th:utext="${Cyberrisks1p1e}"></td>
+      </tr>
+      <tr>
+        <td>
+          <p class="es">Fecha de creación de la empresa:</p>
+          <p class="en">Data business established</p>
+        </td>
+        <td class="answer" th:utext="${Cyberrisks1p1f}"></td>
+      </tr>
+      <tr>
+        <td>
+          <p class="es">Número de empleados:</p>
+          <p class="en">Number of employees</p>
+        </td>
+        <td class="answer" th:utext="${Cyberrisks1p1g}"></td>
+      </tr>
+      <tr>
+        <td>
+          <p class="es">
+            ¿Ha estado involucrado en alguna fusión o adquisición en los últimos 3 años?
+          </p>
+          <p class="en">
+            Have you been involved in any mergers and acquisitions within the last 3 years?
+          </p>
+        </td>
+
+        <td class="yes-no">
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p1h != null and Cyberrisks1p1h ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex" style="margin-top: 3px; margin-right: 20px">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p1h != null and !Cyberrisks1p1h ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+        </td>
+
+
+      </tr>
+    </table>
+
+
+
+    <p class="es">En caso afirmativo, por favor facilite detalles completos, si es necesario utilice una hoja
+      adicional.
+    </p>
+    <p class="en">If 'Yes', please provide full details, on a separate sheet if necessary.</p>
+    <p class="answer" th:if="${Cyberrisks1p1h}" th:text="${Cyberrisks1p1hnormal}"></p>
+   </div>
+
+
+  <!--Page 3-->
+  <div class="page content">
+
+    <!-- Sección 2: INFORMACIÓN FINANCIERA -->
+
+    <div class="page content">
+
+
+      <p class="es">
+        Descripción de su actividad principal y otros posibles segmentos de negocio incluyendo a sus filiales.
+        Por favor, anexe un organigrama con la estructura corporativa.
+      </p>
+      <p class="en">
+        Description of its main activity and other possible business segments including its subsidiaries.
+        Please attach an organizational chart with the corporate structure.
+      </p>
+
+      <p> <span class="answer" th:utext="${Cyberrisks1p1j}"></span></p>
+
+      <div class="section-header">
+        2. INFORMACIÓN FINANCIERA/
+        FINANCIAL INFORMATION
+      </div>
+
+      <!-- a. Ingresos brutos anuales (tabla) -->
+      <table class="question-table1">
+        <tr>
+          <td class="question-number1">a.</td>
+          <td class="question-content1">
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    <p class="es" style="padding-right: 2.5cm;">Ingresos brutos anuales</p>
+                    <p class="en">Gross annual revenue (Dic 2023)</p>
+                  </th>
+                  <th>
+                    <p class="es" style="padding-right: 2.5cm;">Facturación último cierre anual</p>
+                    <p class="en">Last year Invoicing</p>
+                  </th>
+                  <th>
+                    <p class="es" style="padding-right: 2.5cm;">Estimación año en curso</p>
+                    <p class="en">Current year estimate</p>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <th:block th:if="${tables['Cyberrisks1p2a'] != null}">
+                  <tr th:each="rowKey : ${tables['Cyberrisks1p2a'].rowKeys}">
+                    <td th:each="col : ${tables['Cyberrisks1p2a'].columns}">
+                      <span th:text="${col.rows.get(rowKey)} ?: ''">—</span>
+                    </td>
+                  </tr>
+                </th:block>
+                <th:block th:unless="${tables['Cyberrisks1p2a'] != null}">
+                  <tr>
+                    <td colspan="3">No data available</td>
+                  </tr>
+                </th:block>
+
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <!-- b. Porcentaje de los ingresos... -->
+      <table class="question-table">
+        <tr>
+          <td class="question-number">b.</td>
+          <td class="question-content">
+            <p class="es">Porcentaje de los ingresos brutos anuales u operaciones a través de la página Web:</p>
+            <p class="en">Percentage of gross annual revenue accounted for by sales or operations through your website.
+            </p>
+            <p class="answer" th:utext="${Cyberrisks1p2b}"></p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- c. Porcentaje anual de transacciones... -->
+      <table class="question-table">
+        <tr>
+          <td class="question-number">c.</td>
+          <td class="question-content">
+            <p class="es">Porcentaje anual de transacciones pagadas con tarjeta de crédito o débito:</p>
+            <p class="en">Percentage of annual transactions paid for by debit/credit card %</p>
+            <p class="answer" th:utext="${Cyberrisks1p2c}"></p>
+          </td>
+        </tr>
+      </table>
+
+      <!-- d. Valor medio de las transacciones -->
+      <table class="question-table">
+        <tr>
+          <td class="question-number">d.</td>
+          <td class="question-content">
+            <p class="es">Valor medio de las transacciones:</p>
+            <p class="en">Average transaction value</p>
+            <p class="answer" th:utext="${Cyberrisks1p2d}"></p>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+
+  </div>
+
+  <!--Page 4-->
+  <div class="page content">
+
+
+    <!-- e. Porcentaje de los ingresos brutos generados... -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">e.</td>
+        <td class="question-content">
+          <p class="es">Porcentaje de los ingresos brutos generados la pasada anualidad provenientes de:</p>
+          <p class="en">Percentage of last year's gross annual revenue generated from:</p>
+          <table>
+            <tr>
+              <td>
+                <p class="es">Clientes en EE.UU / Canadá sujetos a la ley Americana o canadiense</p>
+                <p class="en">US/Canadian clients subject to US/Canadian Law %</p>
+              </td>
+              <td class="answer yes-no" th:utext="${Cyberrisks1p2e1}"></td>
+            </tr>
+            <tr>
+              <td>
+                <p class="es">País de donde emana el mayor volumen de negocio:</p>
+                <p class="en">Business emanating from the Insured's main domicile</p>
+              </td>
+              <td class="answer yes-no" th:utext="${Cyberrisks1p2e2}"></td>
+            </tr>
+            <tr>
+              <td>
+                <p class="es">Clientes en el resto del mundo</p>
+                <p class="en">Clients anywhere else in the world %</p>
+              </td>
+              <td class="answer yes-no" th:utext="${Cyberrisks1p2e3}"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Sección 3: CONTINUIDAD DE NEGOCIO FRENTE A BRECHAS DE SEGURIDAD O PRIVACIDAD -->
+    <div class="section-header">
+      3. CONTINUIDAD DE NEGOCIO FRENTE A BRECHAS DE SEGURIDAD O PRIVACIDAD/
+      Business continuity against security gaps or computer privacy
+    </div>
+
+    <!-- a. Después de cuánto tiempo sin acceso... -->
+    <table class="question-table1">
+      <tr>
+        <td class="question-number1">a.</td>
+        <td class="question-content1">
+          <p class="es">
+            Después de cuánto tiempo sin acceso al Sistema / Seguridad / Plataforma tecnológica
+            por parte de sus empleados se ocasionaría un impacto significativo en su negocio:
+          </p>
+          <p class="en">
+            Indicate time after which the inability for staff to access your internal computer network
+            and systems would have a significant impact on your business:
+          </p>
+          <table>
+            <tr>
+              <th>
+                <p class="es">Inmediatamente</p>
+                <p class="en">Immediately</p>
+              </th>
+              <th>
+                <p class="es">Después de 6 horas</p>
+                <p class="en">After 6 hrs</p>
+              </th>
+              <th>
+                <p class="es">Después de 12 horas</p>
+                <p class="en">After 12 hrs</p>
+              </th>
+              <th>
+                <p class="es">Después de 24 horas</p>
+                <p class="en">After 24 hrs</p>
+              </th>
+              <th>
+                <p class="es">Después de 48 horas</p>
+                <p class="en">After 48 hrs</p>
+              </th>
+              <th>
+                <p class="es">Nunca</p>
+                <p class="en">Never</p>
+              </th>
+            </tr>
+            <tr>
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span
+                    th:text="${#strings.containsIgnoreCase(Cyberrisks1p3a1?:'', 'Inmediatamente')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3a1?:'', 'After 6')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3a1?:'', 'After 12')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3a1?:'', 'After 24')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3a1?:'', 'After 48')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3a1?:'', 'Never')} ? 'X' : ''"></span>
+                </label>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div style="margin-bottom: 0.5cm"
+      th:if="${#strings.containsIgnoreCase(Cyberrisks1p3a1 ?: '', 'Otro') or #strings.containsIgnoreCase(Cyberrisks1p3a1 ?: '', 'Other')}"
+      th:text="${Cyberrisks1p3a1normal ?: ''}">
+    </div>
+
+  </div>
+
+
+  <!--Page 5-->
+  <div class="page content">
+
+
+    <!-- b. Indique cuánto tiempo sin que sus clientes... -->
+    <table class="question-table1">
+      <tr>
+        <td class="question-number1">b.</td>
+        <td class="question-content1">
+          <p class="es">
+            Indique cuánto tiempo sin que sus clientes tengan acceso a su página web supondría
+            un impacto significativo para su negocio:
+          </p>
+          <p class="en">
+            Indicate time after which the inability for customers to access your website would have
+            a significant impact on your business:
+          </p>
+          <table>
+            <tr>
+              <th>
+                <p class="es">Inmediatamente</p>
+                <p class="en">Immediately</p>
+              </th>
+              <th>
+                <p class="es">Después de 6 horas</p>
+                <p class="en">After 6 hrs</p>
+              </th>
+              <th>
+                <p class="es">Después de 12 horas</p>
+                <p class="en">After 12 hrs</p>
+              </th>
+              <th>
+                <p class="es">Después de 24 horas</p>
+                <p class="en">After 24 hrs</p>
+              </th>
+              <th>
+                <p class="es">Después de 48 horas</p>
+                <p class="en">After 48 hrs</p>
+              </th>
+              <th>
+                <p class="es">Nunca</p>
+                <p class="en">Never</p>
+              </th>
+            </tr>
+            <tr>
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span
+                    th:text="${#strings.containsIgnoreCase(Cyberrisks1p3br1?:'', 'Inmediatamente')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3br1?:'', 'After 6')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3br1?:'', 'After 12')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3br1?:'', 'After 24')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3br1?:'', 'After 48')} ? 'X' : ''"></span>
+                </label>
+              </td>
+
+              <td class="answer yes-no p-1">
+                <label class="checkbox">
+                  <span th:text="${#strings.containsIgnoreCase(Cyberrisks1p3br1?:'', 'Never')} ? 'X' : ''"></span>
+                </label>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div style="margin-bottom: 0.5cm;"
+      th:if="${#strings.containsIgnoreCase(Cyberrisks1p3br1 ?: '', 'Otro') or #strings.containsIgnoreCase(Cyberrisks1p3br1 ?: '', 'Other')}"
+      th:text="${Cyberrisks1p3br1normal ?: ''}">
+    </div>
+
+    <!-- c. ¿Dispone de un plan de actuación...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">c.</td>
+        <td class="question-content">
+          <p class="es">¿Dispone de un plan de actuación en caso de descubrir una brecha de seguridad o privacidad de
+            datos?</p>
+          <p class="en">Do you have a BCP or a DRP?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p3c != null and Cyberrisks1p3c ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p3c != null and !Cyberrisks1p3c ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- d. ¿Cada cuánto tiempo son revisados...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">d.</td>
+        <td class="question-content">
+          <p class="es">¿Cada cuánto tiempo son revisados estos planes?</p>
+          <p class="en">How often are these plans tested?</p>
+          <p class="answer" th:utext="${Cyberrisks1p3d}"></p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- e. ¿Ha llevado a cabo alguna auditoria...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">e.</td>
+        <td class="question-content">
+          <p class="es">¿Ha llevado a cabo alguna auditoria de sus sistemas tecnológicos recientemente?</p>
+          <p class="en">Have you recently conducted an audit of your IT systems?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p3e != null and Cyberrisks1p3e ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p3e != null and !Cyberrisks1p3e ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+
+    <!-- f. ¿Indique la fecha en la cual se llevó a cabo...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">f.</td>
+        <td class="question-content">
+          <p class="es">¿Indique la fecha en la cual se llevó a cabo su última prueba de intromisión externa en sus
+            sistemas?</p>
+          <p class="en">When was your last external penetration test carried out? How often do you conduct these tests?
+          </p>
+          <p class="answer" th:utext="${Cyberrisks1p3f}"></p>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+
+  <!--Page 6-->
+  <div class="page content">
+
+
+
+
+    <!-- g. ¿Les ha surgido alguna preocupación...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">g.</td>
+        <td class="question-content">
+          <p class="es">¿Les ha surgido alguna preocupación sobre cualquier aspecto de la red en la que se aconsejó una
+            subsanación inmediata?</p>
+          <p class="en">Was any serious concern raised with any aspect of the network where immediate correction was
+            advised?</p>
+          <p></p>
+          <p></p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span th:text="${Cyberrisks1p3g != null and Cyberrisks1p3g ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span th:text="${Cyberrisks1p3g != null and !Cyberrisks1p3g ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- h. En caso de que la pregunta anterior sea afirmativa... -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">h.</td>
+        <td class="question-content">
+          <p class="es">En caso de que la pregunta anterior sea afirmativa, ¿han sido las recomendaciones llevadas a
+            cabo?</p>
+          <p class="en">If 'Yes' to the above, were the recommendations carried out?</p>
+
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p3h != null and Cyberrisks1p3h ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p3h != null and !Cyberrisks1p3h ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+        </td>
+      </tr>
+    </table>
+
+
+    <!-- Sección 4: SEGURIDAD DE LA RED -->
+    <div class="section-header">
+      4. SEGURIDAD DE LA RED/
+      Network Security
+    </div>
+
+    <!-- a. ¿Tiene un responsable...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">a.</td>
+        <td class="question-content">
+          <p class="es">¿Tiene un responsable o supervisor de seguridad o un responsable de protección de datos o un
+            supervisor de información encargado de la protección y seguridad de los datos y cumplimiento interno de la
+            legislación en materia de protección de datos? </p>
+          <p class="en">Do you employ a Chief Privacy Officer, or Chief Information Officer?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4a1 != null and Cyberrisks1p4a1 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4a1 != null and !Cyberrisks1p4a1 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- b. En caso de que la anterior pregunta sea negativa... -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number"></td>
+        <td class="question-content">
+          <p class="es">En caso de que la anterior pregunta sea negativa, ¿Quién es el responsable de la protección de
+            datos y la privacidad?</p>
+          <p class="en">If no, who is responsible for data protection and privacy issues?</p>
+
+          <p th:unless="${Cyberrisks1p4a1}" class="answer" th:utext="${Cyberrisks1p4a1normal}"></p>
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- c. ¿Incluyen en sus políticas de seguridad...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">b.</td>
+        <td class="question-content">
+          <p class="es">¿Incluyen en sus políticas de seguridad y protección de datos un curso de formación a todos los
+            empleados?</p>
+          <p class="en">Does your IT employee policy include mandatory training for all employees?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4b != null and Cyberrisks1p4b ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4b != null and !Cyberrisks1p4b ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+
+  <!--Page 7-->
+  <div class="page content">
+
+
+
+    <div class="section-header"></div>
+
+
+    <!-- d. ¿A todos los puestos de trabajo analizados...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">c.</td>
+        <td class="question-content">
+          <p class="es">¿A todos los puestos de trabajo analizados, se le asignan un único usuario de acceso y clave que
+            se modifica periódicamente?
+          </p>
+          <p class="en">Are all assigned specified rights, privileges and unique user IDs and passwords, assessed
+            periodically?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4c != null and Cyberrisks1p4c ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4c != null and !Cyberrisks1p4c ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- e. ¿Tiene procedimientos estrictos de revocación de acceso...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">d.</td>
+        <td class="question-content">
+          <p class="es">¿Tiene procedimientos estrictos de revocación de acceso a usuarios cuyo contrato de trabajo haya
+            finalizado? ¿Hay acceso al histórico de Información utilizada por dicho empleado? </p>
+          <p class="en">Do you have strict user revocation procedures on user accounts and inventoried recovery of all
+            information assets following employment termination? </p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4d != null and Cyberrisks1p4d ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4d != null and !Cyberrisks1p4d ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+
+    <!-- f. ¿Tiene software antivirus actualizado...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">e.</td>
+        <td class="question-content">
+          <p class="es">¿Tiene software antivirus actualizado en todos sus ordenadores, servidores y redes de acuerdo
+            con las recomendaciones de sus proveedores de software? </p>
+          <p class="en">Do you have antivirus software on all computer devices, servers and networks which are updated
+            in accordance with the software providers’ recommendations? </p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4de != null and Cyberrisks1p4de ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4de != null and !Cyberrisks1p4de ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+
+
+
+
+    <!-- g. ¿Utilizan Firewall...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">f.</td>
+        <td class="question-content">
+          <p class="es">¿Utilizan Firewall?</p>
+          <p class="en">Do you have a Firewall?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4df != null and Cyberrisks1p4df ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4df != null and !Cyberrisks1p4df ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- h. ¿Tiene usted procedimientos de control de acceso...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">g.</td>
+        <td class="question-content">
+          <p class="es">¿Tiene usted procedimientos de control de acceso y encriptado de disco duro para evitar la
+            exposición no autorizada de datos en todos los ordenadores portátiles, PDAs, smartphones (p.ej. BlackBerry)
+            y PC’s en la oficina u ordenadores personales? </p>
+          <p class="en">Do you have access control procedures and hard drive encryption on all portable media and mobile
+            devises? </p>
+
+          <div class="d-flex flex-column">
+
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4dg != null and Cyberrisks1p4dg ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4dg != null and !Cyberrisks1p4dg ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+
+
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <!--Page 8-->
+  <div class="page content">
+
+
+
+
+    <div class="section-header"></div>
+
+
+    <!-- i. ¿La información sensible y confidencial que se transmite...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">h.</td>
+        <td class="question-content">
+          <p class="es">¿La información sensible y confidencial que se transmite dentro y desde su organización está
+            encriptada?</p>
+          <p class="en">Is all sensitive and confidential information transmitted within and from your organization
+            encrypted?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark"
+                  th:text="${Cyberrisks1p4dh == 'yes' or Cyberrisks1p4dh == 'si'} ? 'x' : ''"></span>
+              </label>
+              &nbsp; sí/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4dh == 'no'} ? 'x' : ''"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark"
+                  th:text="${Cyberrisks1p4dh == 'parcialmente' or Cyberrisks1p4dh == 'partially'} ? 'x' : ''"></span>
+              </label>
+              &nbsp; parcialmente/partially
+            </div>
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- j. ¿Se encuentra encriptada la información sensible y confidencial...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">i.</td>
+        <td class="question-content">
+          <p class="es">¿Se encuentra encriptada la información sensible y confidencial almacenada en sus bases de
+            datos, servidores y archivos?</p>
+          <p class="en">Is all sensitive and confidential information stored on your databases, servers and data files
+            encrypted?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark"
+                  th:text="${Cyberrisks1p4di == 'yes' or Cyberrisks1p4di == 'si'} ? 'x' : ''"></span>
+              </label>
+              &nbsp; sí/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4di == 'no'} ? 'x' : ''"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark"
+                  th:text="${Cyberrisks1p4di == 'parcialmente' or Cyberrisks1p4di == 'partially'} ? 'x' : ''"></span>
+              </label>
+              &nbsp; parcialmente/partially
+            </div>
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- k. ¿Se encripta la información contenida en dispositivos móviles...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">j.</td>
+        <td class="question-content">
+          <p class="es">¿Se encripta la información contenida en dispositivos móviles (¿portátiles, drivers,
+            dispositivos USB, etc.?)</p>
+          <p class="en">Is all information on mobile devices (laptops, drivers, USB devices, etc.) encrypted?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4dj != null and Cyberrisks1p4dj ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p4dj != null and !Cyberrisks1p4dj ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- Sección 5: INFORMACIÓN Y GESTIÓN DE DATOS -->
+    <div class="section-header">
+      5. INFORMACIÓN Y GESTIÓN DE DATOS/
+      Information and data management
+    </div>
+
+    <!-- a. ¿Su programa de clasificación de información...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">a.</td>
+        <td class="question-content">
+          <p class="es">¿Su programa de clasificación de información incluye una clasificación estándar de datos (por
+            ejemplo "públicos", "solo para uso interno", "confidencial")?</p>
+          <p class="en">Does your information asset programme include a data classification standard (E.g. public,
+            internal use only, confidential…)? </p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5a != null and Cyberrisks1p5a ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5a != null and !Cyberrisks1p5a ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- b. ¿Los sistemas críticos cuentan con medidas...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">b.</td>
+        <td class="question-content">
+          <p class="es">¿Los sistemas críticos cuentan con medidas adicionales de segmentación, autentificación segura?
+          </p>
+          <p class="en">Do critical systems have additional segmentation and secure authentication?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5b != null and Cyberrisks1p5b ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5b != null and !Cyberrisks1p5b ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+
+
+  </div>
+
+  <div class="page content">
+
+
+
+    <div class="section-header"></div>
+
+
+    <!-- c. ¿Contiene su página web la política de privacidad...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">c.</td>
+        <td class="question-content">
+          <p class="es">¿Contiene su página web la política de privacidad habiendo sido revisada esta por un abogado?
+          </p>
+          <p class="en">Do you post a privacy policy on your website that has been reviewed by a qualified lawyer?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5c != null and Cyberrisks1p5c ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5c != null and !Cyberrisks1p5c ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+
+    <!-- d. ¿El solicitante trata, almacena o cede datos...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">d.</td>
+        <td class="question-content">
+          <p class="es">¿El solicitante trata, almacena o cede datos especialmente protegidos como datos personales,
+            tarjetas de crédito o numerosas cuentas bancarias?</p>
+          <p class="en">Does the applicant treat, store or transfer specially protected data such as personal data,
+            credit cards, or numerous bank accounts?</p>
+          <p></p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5d != null and Cyberrisks1p5d ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5d != null and !Cyberrisks1p5d ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- e. ¿Dispone de un inventario sobre información...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">e.</td>
+        <td class="question-content">
+          <p class="es">¿Dispone de un inventario sobre información que indique los propietarios y las fuentes de dichos
+            datos?</p>
+          <p class="en">Do you have an information asset inventory that lists the owners and sources of all data?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5e != null and Cyberrisks1p5e ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5e != null and !Cyberrisks1p5e ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- f. ¿Tiene procedimientos en vigor para eliminar información...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">f.</td>
+        <td class="question-content">
+          <p class="es">¿Tiene procedimientos en vigor para eliminar información y para controlar el periodo de tiempo
+            que debe mantenerse la información en sus archivos?</p>
+          <p class="en">Do you have procedures in force to monitor the period for which customer data is held, and have
+            processes for deleting this information at the end of that period?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5f != null and Cyberrisks1p5f ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5f != null and !Cyberrisks1p5f ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- g. ¿La información almacenada en formato físico...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">g.</td>
+        <td class="question-content">
+          <p class="es">¿La información almacenada en formato físico (papel, discos, CD'S, etc.) se desecha o recicla
+            con procedimientos confidenciales y seguros?</p>
+          <p class="en">Is all information held in physical form (paper, disks, CDs etc.) disposed of or recycled by
+            confidential and secure methods which are recognized throughout the organization? </p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5g != null and Cyberrisks1p5g ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5g != null and !Cyberrisks1p5g ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+
+
+    <!-- h. ¿Mantiene un registro...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">h.</td>
+        <td class="question-content">
+          <p class="es">¿Mantiene un registro de incidencias (amenazas a sistemas de seguridad) y fallos en la red?</p>
+          <p class="en">Do you keep an incident log of all system security breaches and network failures?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5h != null and Cyberrisks1p5h ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p5h != null and !Cyberrisks1p5h ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="page content">
+
+
+
+
+
+    <!-- Sección 6: ACTIVIDAD DE OUTSOURCING -->
+    <div class="section-header">
+      6. ACTIVIDAD DE OUTSOURCING/
+      Outsourcing Activity
+    </div>
+
+    <!-- a. ¿Externaliza la gestión o alguna de sus operaciones tecnológicas? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">a.</td>
+        <td class="question-content">
+          <p class="es">¿Externaliza la gestión o alguna de sus operaciones tecnológicas?</p>
+          <p class="en">Do you outsource the management or any part of your IT operations?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7a != null and Cyberrisks1p7a ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7a != null and !Cyberrisks1p7a ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- b. En caso afirmativo, por favor facilite detalles... -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number"></td>
+        <td class="question-content">
+          <p class="es">
+            En caso afirmativo, por favor facilite detalles, si fuera necesario, usar una hoja adicional, incluyendo qué
+            tipo de subcontratación, a quién y detalles acerca del proceso para
+            elegir el subcontratista y copia del contrato estándar que utilicen para ello:
+          </p>
+          <p class="en">
+            If 'Yes', please provide details including the type of outsourcing, the provider and the selection process.
+          </p>
+
+          <p class="answer" th:if="${Cyberrisks1p7a}" th:utext="${Cyberrisks1p7anormal}"></p>
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- c. ¿Exige al subcontratista indemnizaciones...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">b.</td>
+        <td class="question-content">
+          <p class="es">El solicitante ¿exige al subcontratista indemnizaciones por daños y perjuicios derivados de
+            las responsabilidades que pudiera ser atribuible a dicho subcontratista? </p>
+          <p class="en">Does the applicant require compensation from the subcontractor for damages arising from the
+            responsibilities that could be attributable to that subcontractor? </p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7b != null and Cyberrisks1p7b ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7b != null and !Cyberrisks1p7b ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+
+    <!-- d. ¿Subcontrata el solicitante actividades de proceso...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">c.</td>
+        <td class="question-content">
+          <p class="es">¿Subcontrata el solicitante actividades de proceso o recogida de datos?</p>
+          <p class="es">Does the applicant subcontract the processing or data collection activities?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7c != null and Cyberrisks1p7c ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7c != null and !Cyberrisks1p7c ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+          <p class="en">En caso afirmativo, por favor detalle las funciones de proceso o recogida de datos que son
+            externalizadas:</p>
+          <p class="en">If yes, please detail the process functions or data collection that are outsourced</p>
+          <span class="answer" th:if="${Cyberrisks1p7c}" th:text="${Cyberrisks1p7cnormal}"></span>
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- e. ¿El solicitante requiere al subcontratista que cumpla con la política...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">d.</td>
+        <td class="question-content">
+          <p class="es">¿El solicitante requiere al subcontratista que cumpla con los términos de la política de
+            protección de datos del solicitante?</p>
+          <p class="en">Does the applicant require the subcontractor to comply with the terms of the data protection
+            policy of the applicant? </p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7d != null and Cyberrisks1p7d ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7d != null and !Cyberrisks1p7d ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="page content">
+
+
+
+
+    <!-- f. ¿Dispone la sociedad de servicios en nube o cloud computing? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">e.</td>
+        <td class="question-content">
+          <p class="es">¿Dispone la sociedad de servicios en nube o cloud computing?</p>
+          <p class="en">Does the company have services in cloud or cloud computing? </p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7e != null and Cyberrisks1p7e ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7e != null and !Cyberrisks1p7e ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+          <p class="es">En caso afirmativo, detallar la política de seguridad en cloud para los datos personales y
+            corporativos:</p>
+          <p class="es">If yes, detail cloud security policy for personal and corporate data security.</p>
+          <p class="answer" th:if="${Cyberrisks1p7e}" th:utext="${Cyberrisks1p7enormal}"></p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- g. ¿Realiza revisiones periódicas a sus proveedores...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">f.</td>
+        <td class="question-content">
+          <p class="es">¿Realiza revisiones periódicas a sus proveedores de servicios y socios para comprobar que
+            cumplen
+            con sus requerimientos para la protección de la información sensible que manejan?</p>
+          <p class="en">Do you conduct regular reviews of your third party service providers and partners to ensure that
+            they meet
+            your requirements for protecting sensitive information in their care? </p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7f != null and Cyberrisks1p7f ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7f != null and !Cyberrisks1p7f ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- h. ¿Se auditan periódicamente las funciones de subcontratistas...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">g.</td>
+        <td class="question-content">
+          <p class="es">¿Se auditan periódicamente las funciones de subcontratistas / prestadores del servicio para
+            asegurar que cumplen
+            con las políticas de seguridad del Solicitante? </p>
+          <p class="en">Do you enforce provisions for non-compliance by contractors and others? </p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7g != null and Cyberrisks1p7g ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p7g != null and !Cyberrisks1p7g ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+
+
+
+    <!-- Sección 7: SINIESTROS Y CIRCUNSTANCIAS -->
+    <div class="section-header">
+      7. SINIESTROS Y CIRCUNSTANCIAS/
+      Claims and Circumstances
+    </div>
+
+    <!-- a. ¿Ha sido objeto de investigaciones o ha recibido reclamaciones...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">1.</td>
+        <td class="question-content">
+          <p class="es">¿Ha sido objeto de investigaciones o ha recibido reclamaciones por protección de datos
+            por partes de la Agencia Española de Protección de Datos u otra autoridad similar?</p>
+          <p class="en">Have you been investigated or have you received data protection claims by
+            parts of the Spanish Data Protection Agency or other similar authority?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a1 != null and Cyberrisks1p8a1 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a1 != null and !Cyberrisks1p8a1 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+
+  <div class="page content">
+
+
+
+
+    <!-- b. ¿Ha sufrido alguna caída de la red o interrupción no programada...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">2.</td>
+        <td class="question-content">
+          <p class="es">¿Ha sufrido alguna caída de la red o interrupción no programada en los últimos 24 meses?</p>
+          <p class="en">Have you sustained any unscheduled network outage or interruption within the past 24 months?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a2 != null and Cyberrisks1p8a2 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a2 != null and !Cyberrisks1p8a2 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+
+    <!-- c. ¿Ha sufrido alguna vez un acceso no autorizado al sistema...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">3.</td>
+        <td class="question-content">
+          <p class="es">¿Ha sufrido alguna vez un acceso no autorizado al sistema, alteraciones, virus o ataques de
+            código malicioso, pérdida de datos, incidente de hacking, robo de datos
+            o un incidente similar?</p>
+          <p class="en">Have you sustained a material or significant system intrusion, tampering, virus or malicious
+            code attack, loss of data, hacking incident, data theft or similar incident or situation?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a3 != null and Cyberrisks1p8a3 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a3 != null and !Cyberrisks1p8a3 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- d. ¿Tiene conocimiento de hechos o circunstancias que puedan dar...? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">4.</td>
+        <td class="question-content">
+          <p class="es">¿Tiene conocimiento de hechos o circunstancias que puedan dar lugar a una reclamación contra
+            usted y / o una reclamación bajo esta póliza de seguros?</p>
+          <p class="en">Are you or they aware of any circumstances or incidents that have resulted in any claim against
+            you and/or a claim against any insurance policy that provides the type of coverage being requested in this
+            application?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a4 != null and Cyberrisks1p8a4 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a4 != null and !Cyberrisks1p8a4 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+        </td>
+      </tr>
+    </table>
+
+    <!--5. En caso de haber contestado afirmativamente cualquiera de las preguntas formuladas-->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">5.</td>
+        <td class="question-content">
+          <p class="es">En caso de haber contestado afirmativamente cualquiera de las preguntas formuladas en dicho
+            apartado, por favor facilite detalles en una hoja aparte si fuera necesario.</p>
+          <p class="en">If ‘Yes’ to any questions within this section, please provide full details, on a separate sheet
+            if necessary.</p>
+
+          <p class="answer" th:utext="${Cyberrisks1p8a5}"></p>
+
+        </td>
+      </tr>
+    </table>
+
+    <!-- e. ¿Le han declinado cobertura de seguro o su asegurador actual le ha impuesto alguna condición? -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">6.</td>
+        <td class="question-content">
+          <p class="es">¿Le han declinado cobertura de seguro o su asegurador actual le ha impuesto alguna condición?
+          </p>
+          <p class="en">Have you ever been refused insurance or had any special terms or conditions imposed by any
+            insurer?</p>
+
+          <div class="d-flex flex-column">
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a6 != null and Cyberrisks1p8a6 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; si/yes
+            </div>
+
+            <div class="d-flex">
+              <label class="checkbox">
+                <span class="checkboxmark" th:text="${Cyberrisks1p8a6 != null and !Cyberrisks1p8a6 ? 'x' : ''}"></span>
+              </label>
+              &nbsp; no
+            </div>
+
+
+          </div>
+
+
+
+        </td>
+      </tr>
+    </table>
+
+
+
+  </div>
+
+  <div class="page content">
+
+
+
+
+    <p>
+      Las declaraciones prestadas en este cuestionario son correctas y completas.
+      Cualquier cambio relevante que pueda producirse tras su cumplimentación deberá
+      ser comunicado inmediatamente con anterioridad a la fecha de efecto de la póliza
+      o durante su vigencia en caso de emitirse.
+      <br /> Se acuerda que este cuestionario, junto con cualquier otra información
+      adicional aportada, será parte de la póliza y base del contrato de seguro.
+    </p>
+    <br />
+
+    <table class="no-border-table">
+      <tbody>
+        <tr>
+          <td>Nombre y Apellidos del Firmante:</td>
+          <td class="line-field" th:utext="${NombreApellidos}"></td>
+        </tr>
+        <tr>
+          <td>Cargo:</td>
+          <td class="line-field" th:utext="${Cargo}"></td>
+        </tr>
+        <tr>
+          <td>Fecha:</td>
+          <td class="line-field" th:utext="${Fecha}"></td>
+        </tr>
+        <tr>
+          <td>Firma:</td>
+          <td class="line-field" th:utext="${Firma}"></td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+  </div>
+
+</body>
+
+</html>

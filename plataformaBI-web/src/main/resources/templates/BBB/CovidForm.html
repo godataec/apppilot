@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CUESTIONARIO COVID - 19</title>
+  <style>
+    /* Named pages for Flying Saucer */
+    @page cover-page {
+      size: A4;
+      margin: 2cm;
+    }
+
+    @page content-page {
+      size: A4;
+      margin: 2cm 2cm 1cm 2cm;
+
+      @bottom-center {
+        content: "lockton.com | © 2021 Lockton Perú. Todos los derechos reservados.";
+        font-size: 8pt;
+        color: gray;
+        border-top: 1px solid #aaa;
+        padding-top: 2pt;
+        width: 90%;
+      }
+    }
+
+    /* Apply named pages to elements */
+    .cover {
+      page: cover-page;
+      page-break-after: always;
+    }
+
+    .content {
+      page: content-page;
+    }
+
+    /* Global Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .page {
+      /* Remove fixed heights and manual page breaks */
+      /* Content will flow naturally and CSS Paged Media will handle pagination */
+      box-sizing: border-box;
+      page-break-after: avoid;
+      /* Let content flow naturally */
+    }
+
+    /* Question numbering using table layout for better alignment */
+    .question-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 15pt 0;
+      border: none;
+      table-layout: fixed;
+    }
+
+    .question-table td {
+      border: none;
+      padding: 0;
+      vertical-align: top;
+    }
+
+    .question-number {
+      font-weight: bold;
+      width: 1.5em;
+      text-align: left;
+      padding-right: 0.5em;
+    }
+
+    .question-content {
+      width: calc(100% - 1.5em);
+    }
+
+    /* Sub-question table layout */
+    .sub-question-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 15pt 0;
+      border: none;
+      table-layout: fixed;
+    }
+
+    .sub-question-table td {
+      border: none;
+      padding: 0;
+      vertical-align: top;
+    }
+
+    .sub-question-bullet {
+      width: 1.5em;
+      text-align: left;
+      padding-right: 0.5em;
+    }
+
+    .sub-question-content {
+      width: calc(100% - 1.5em);
+    }
+
+    /* Reset the counter for questions */
+    .container-numbered {
+      counter-reset: question;
+    }
+
+    .bold-underline {
+      font-weight: bold;
+      text-decoration: underline;
+      margin-bottom: 9pt;
+      font-size: 10pt;
+      line-height: 14pt;
+    }
+
+    .sub-question-content div {
+      margin-top: 10px;
+    }
+
+    .question-content div {
+      margin-top: 10px;
+    }
+
+
+    /* -------------------- */
+    /* Cover (Portada) */
+    /* -------------------- */
+    .cover {
+      text-align: left;
+      font-family: 'EB Garamond', serif;
+      padding-top: 4cm;
+      padding-left: 0;
+      page-break-after: always;
+      /* Force page break after cover */
+    }
+
+    .cover .cover-container {
+      background-color: #808080;
+      width: 9.41cm;
+      padding: 1cm;
+      padding-top: 1cm;
+      padding-left: 1cm;
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: column;
+      color: white;
+      gap: 4cm;
+      height: 9.25cm;
+    }
+
+    .cover .cover-header {
+      font-size: 18pt;
+      margin-bottom: 15pt;
+    }
+
+    .cover .cover-title {
+      font-size: 28pt;
+      margin-bottom: 15pt;
+    }
+
+    .cover .cover-subtitle {
+      font-size: 20pt;
+      font-style: italic;
+      margin-top: 15pt;
+      letter-spacing: -0.5pt;
+    }
+
+    /* Celeste horizontal line */
+    .cover .cover-divider {
+      border: none;
+      height: 2px;
+      width: 150px;
+      margin: 20px 0;
+    }
+
+    .cover .cover-date {
+      font-size: 10pt;
+      margin-bottom: 9pt;
+    }
+
+    .cover .cover-footer {
+      margin-top: 8cm;
+      font-size: 10pt;
+      text-align: left;
+      opacity: 50%;
+    }
+
+    /* -------------------- */
+    /* Content */
+    /* -------------------- */
+    .content {
+      margin-left: 0.2cm;
+      width: 90%;
+      height: 100%;
+      font-size: 10pt;
+      line-height: 14pt;
+      /* So the footer is not overlapped */
+    }
+
+    .content h1 {
+      text-align: center;
+      font-size: 11pt;
+      margin-bottom: 9pt;
+    }
+
+    .section-title {
+      font-size: 20pt;
+      margin-top: 35pt;
+      margin-bottom: 27pt;
+      font-style: italic;
+      letter-spacing: -0.5pt;
+      text-decoration: underline;
+      font-family: 'EB Garamond', serif;
+    }
+
+    .section-subtitle {
+      font-size: 10pt;
+      margin-top: 4.5pt;
+      margin-bottom: 9pt;
+      font-weight: bold;
+    }
+
+    .sub-question {
+      margin-left: 2em;
+      width: 100%;
+      /* Ensure full width */
+    }
+
+    .question {
+      margin-bottom: 9pt;
+      page-break-inside: avoid;
+      width: 100%;
+      /* Ensure full width */
+    }
+
+    .question p {
+      margin: 0 0 4.5pt 0;
+      width: 100%;
+      /* Ensure full width */
+      word-wrap: break-word;
+      /* Break words to prevent overflow */
+      overflow-wrap: break-word;
+    }
+
+    .es {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: block;
+      width: 100%;
+      /* Ensure full width */
+    }
+
+    .en {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-style: italic;
+      display: block;
+      font-weight: bold;
+      width: 100%;
+      /* Ensure full width */
+    }
+
+    /* Question numbering using table layout for better alignment */
+    img {
+      max-width: 100%;
+      /* Ensure images don't overflow */
+      height: auto;
+      /* Maintain aspect ratio */
+    }
+
+    .cover-divider {
+      height: 2px;
+      width: 60%;
+      background: #00AEEF;
+      border: none;
+      margin: 10px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Page 1: Cover -->
+  <div>
+
+    <div class="cover">
+
+      <div class="cover-container">
+        <div class="cover-title">COVID - 19</div>
+        <div class="cover-subtitle">Cuestionario</div>
+        <hr class="cover-divider" />
+        <div class="cover-date">Fecha del proceso</div>
+      </div>
+      <div class="cover-footer">
+        <img src="lockton.jpg" alt="Pie de página Portada" style="width: 4.17cm;" />
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- Page 2 and onward: Content of the Questionnaire -->
+  <div class="content container-numbered">
+    <h1>CUESTIONARIO COVID - 19</h1>
+
+    <!-- Question 1 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">1.</td>
+        <td class="question-content">
+          <span class="es">¿Qué planes de contingencia han sido adoptadas por la Compañía con respecto al coronavirus?
+            ¿O aún están en etapa de diseñar estos planes? De ser así, ¿se ha contratado la asesoría de consultores
+            externos especializados para este fin?</span>
+          <span class="en">What contingency plans have been adopted by the Company with respect to the coronavirus, or
+            are these plans still in the design stage? If so, have specialized external consultants been hired for
+            this
+            purpose?</span>
+          <img src="covidp1.png" alt="Covid"
+            style="max-width: 100%; width: 500px; display: block; margin: 10px auto;" />
+          <div>
+            <span th:text="${Covid1}"></span>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 2 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">2.</td>
+        <td class="question-content">
+          <span class="es">¿La Compañía ha identificado las fuentes de disrupciones causadas por la crisis del
+            COVID-19
+            que han impactado o que son muy probable que tengan un impacto futuro en el negocio?</span>
+          <span class="en">Has the Company identified the sources of disruptions caused by the COVID-19 crisis that
+            have
+            impacted or are very likely to have a future impact on the business?</span>
+          <div th:if="${Covid2 != null}" th:text="${Covid2}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 3 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">3.</td>
+        <td class="question-content">
+          <span class="es">¿Su equipo de Gestión de Riesgos Corporativos ha finalizado su análisis de la exposición de
+            la Compañía al virus? De ser así, favor compartir las conclusiones de este análisis.</span>
+          <span class="en">Has your Enterprise Risk Management team completed its analysis of the Company's exposure
+            to
+            the virus? If so, please share the conclusions of this analysis.</span>
+          <div th:if="${Covid3 != null}" th:text="${Covid3}"></div>
+        </td>
+      </tr>
+    </table>
+
+
+
+    <!-- Section: Business Continuity Plan (BCP) General Review -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">4.</td>
+        <td class="question-content">
+          <span class="es">Revisión General del Plan de Continuidad de Negocios (PCN)</span>
+          <span class="en">Business Continuity Plan (BCP) General Review</span>
+
+          <!-- Sub-question 4.1 -->
+          <table class="sub-question-table" style="margin-top: 10px;">
+            <tr>
+              <td class="sub-question-bullet">○</td>
+              <td class="sub-question-content">
+                <span class="es">¿Qué procedimientos se siguen si se confirma que un colaborador ha contraído el
+                  COVID-19?</span>
+                <span class="en">What procedures are followed if an employee is confirmed to have contracted
+                  COVID-19?</span>
+                <div th:if="${Covid4a != null}" th:text="${Covid4a}"></div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Sub-question 4.2 -->
+          <table class="sub-question-table">
+            <tr>
+              <td class="sub-question-bullet">○</td>
+              <td class="sub-question-content">
+                <span class="es">¿Se ha realizado estudios y proyecciones de los principales clientes que pueden verse
+                  afectados por la crisis del coronavirus y cómo esta situación puede afectar la demanda y las ventas
+                  de
+                  su Compañía?</span>
+                <span class="en">Have you conducted studies and projections of the main customers that may be affected
+                  by the coronavirus crisis and how this situation may affect the demand and sales of your
+                  Company?</span>
+                <div th:if="${Covid4b != null}" th:text="${Covid4b}"></div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Sub-question 4.3 -->
+          <table class="sub-question-table">
+            <tr>
+              <td class="sub-question-bullet">○</td>
+              <td class="sub-question-content">
+                <span class="es">¿El Plan de Continuidad de Negocio está funcionando como se esperaba? ¿La Compañía ha
+                  experimentado problemas en los sistemas de tecnología de la información (IT) durante este período de
+                  continuidad de negocio? ¿Las Operaciones pueden seguir funcionando a completa capacidad durante esta
+                  fase?</span>
+                <span class="en">Is the Business Continuity Plan working as expected? Has the Company experienced
+                  information technology (IT) systems problems during this business continuity period? Can Operations
+                  continue to function at full capacity during this phase?</span>
+                <div th:if="${Covid4c != null}" th:text="${Covid4c}"></div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- Sub-question 4.4 -->
+          <table class="sub-question-table">
+            <tr>
+              <td class="sub-question-bullet">○</td>
+              <td class="sub-question-content">
+                <span class="es">¿Su Compañía tiene contratada una póliza de Seguros de Incendio y Líneas Aliadas que
+                  incluya la cobertura de Lucro Cesante?</span>
+                <span class="en">Does your Company have a Fire and Allied Lines Insurance policy that includes
+                  coverage
+                  for Loss of Profit?</span>
+                <div th:if="${Covid4d != null}" th:text="${Covid4d}"></div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <!-- Section: Dependency and Supply Chain Issues -->
+  <div class="content">
+
+    <div class="bold-underline" style="margin-top: 30px;">Problemas de dependencia y en la cadena de suministro y
+      desafíos en la cadena de distribución de la Compañía</div>
+    <div class="bold-underline">Dependency and supply chain issues and challenges in the Company's distribution chain
+    </div>
+
+    <!-- Question 5 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">5.</td>
+        <td class="question-content">
+          <span class="es">¿Su Compañía ha experimentado o espera experimentar problemas en la cadena de suministro y
+            distribución? ¿Su Compañía debe salir a ver a los clientes para suministrarles los servicios para los que
+            fueron contratados?</span>
+          <span class="en">Has your Company experienced or does it expect to experience problems in the supply and
+            distribution chain? Does the Company have to go out to customers to provide them with the services for
+            which
+            they were contracted?</span>
+          <div th:if="${Covid5 != null}" th:text="${Covid5}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 6 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">6.</td>
+        <td class="question-content">
+          <span class="es">Si se espera que las fuentes de suministro de la Compañía sufran algún impacto, ¿cuál es el
+            resultado del análisis de los niveles actuales de existencias disponibles y su capacidad para atender a la
+            demanda de los clientes?</span>
+          <span class="en">If the Company's sources of supply are expected to be impacted, what is the result of the
+            analysis of current stock levels on hand and their ability to meet customer demand?</span>
+          <div th:if="${Covid6 != null}" th:text="${Covid6}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Section: Reduction in the demand for products / services -->
+    <div class="section-subtitle">Reduction in the demand for products / services</div>
+
+    <!-- Question 7 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">7.</td>
+        <td class="question-content">
+          <span class="es">¿Qué impacto anticipan en su resultado financiero? ¿Ya se ha registrado impacto alguno a la
+            fecha? ¿Este impacto ha sido divulgado a los accionistas?</span>
+          <span class="en">What impact do you anticipate on your financial results, and has there been any impact to
+            date, and has this impact been disclosed to shareholders?</span>
+          <div th:if="${Covid7 != null}" th:text="${Covid7}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 8 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">8.</td>
+        <td class="question-content">
+          <span class="es">¿La Compañía espera experimentar alguna dificultad para honrar sus compromisos de deuda en
+            los próximos 12 a 18 meses debido a la interrupción disrupciones generadas por esta crisis?</span>
+          <span class="en">Does the Company expect to experience any difficulty in honoring its debt commitments in
+            the
+            next 12 to 18 months due to the disruption generated by this crisis?</span>
+          <div th:if="${Covid8 != null}" th:text="${Covid8}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 9 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">9.</td>
+        <td class="question-content">
+          <span class="es">¿Qué tipo de claúsula de flexibilidad en los compromisos de pago tiene implementado en los
+            contratos de deuda debido al potencial desplome en sus ingresos y/o EBITDA?</span>
+          <span class="en">What kind of flexibility clause in the payment commitments have you implemented in the debt
+            contracts due to the potential slump in your revenues and/or EBITDA?</span>
+          <div th:if="${Covid9 != null}" th:text="${Covid9}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 10 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">10.</td>
+        <td class="question-content">
+          <span class="es">¿Se esperan deficiencias (en existencias o de otro tipo)?</span>
+          <span class="en">Are deficiencies (stock or otherwise) expected?</span>
+          <div th:if="${Covid10 != null}" th:text="${Covid10}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 11 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">11.</td>
+        <td class="question-content">
+          <span class="es">¿La Compañía ha llevado a cabo pruebas de presión financiera en respuesta a la crisis
+            generada por el COVID-19 y el impacto potencial en el largo plazo? ¿Cuáles son las conclusiones de estas
+            pruebas?</span>
+          <span class="en">Has the Company conducted financial stress tests in response to the crisis generated by
+            COVID-19 and the potential long-term impact? What are the conclusions of these tests?</span>
+          <div th:if="${Covid11 != null}" th:text="${Covid11}"></div>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="content">
+
+    <!-- Question 12 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">12.</td>
+        <td class="question-content">
+          <span class="es">¿Se espera un impacto material adverso en el flujo de caja y liquidez de la
+            Compañía?</span>
+          <span class="en">Is a material adverse impact on the Company's cash flow and liquidity expected?</span>
+          <div th:if="${Covid12 != null}" th:text="${Covid12}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 13 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">13.</td>
+        <td class="question-content">
+          <span class="es">¿Se espera un impacto material adverso en la condición financiera de su Compañía /
+            organización o en los resultados operacionales como consecuencia de la pandemia del coronavirus?</span>
+          <span class="en">Is a material adverse impact on your Company's/organization's financial condition or
+            operating results expected as a result of the coronavirus pandemic?</span>
+          <div th:if="${Covid13 != null}" th:text="${Covid13}"></div>
+        </td>
+      </tr>
+    </table>
+
+
+
+    <!-- Question 14 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">14.</td>
+        <td class="question-content">
+          <span class="es">¿Se han efectuado pruebas de presión relacionadas con la pérdida de beneficios como
+            consecuencia del COVID-19? ¿Qué conclusiones arrojan estos estudios? (por ejemplo, ¿cuáles son las
+            pérdidas
+            máximas que la Compañía puede asumir en 12 meses sin exceder sus líneas de crédito)?</span>
+          <span class="en">Have pressure tests related to the loss of profits as a result of COVID-19 been conducted
+            (e.g., what are the maximum losses that the Company can assume in 12 months without exceeding its credit
+            lines)?</span>
+          <div th:if="${Covid14 != null}" th:text="${Covid14}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 15 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">15.</td>
+        <td class="question-content">
+          <span class="es">¿Cómo va a cambiar los ingresos de la Compañía a partir del 01 de marzo del 2020 hacia
+            fines
+            de este año y cómo se comparan estos con los ingresos del mismo periodo del año pasado?</span>
+          <span class="en">How will the Company's revenues change from March 1, 2020 towards the end of this year and
+            how do they compare with the revenues of the same period last year?</span>
+          <div th:if="${Covid15 != null}" th:text="${Covid15}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 16 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">16.</td>
+        <td class="question-content">
+          <span class="es">¿Cómo ha impactado el COVID-19 en la proyección de los resultados financieros de la
+            Compañía
+            o si se planea tener algún cambio? ¿Se han revisado estas proyecciones?</span>
+          <span class="en">How has COVID-19 impacted the projection of the Company's financial results or if any
+            changes
+            are planned? Have these projections been reviewed?</span>
+          <div th:if="${Covid16 != null}" th:text="${Covid16}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 17 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">17.</td>
+        <td class="question-content">
+          <span class="es">¿Qué comunicados públicos se han efectuado informando de los cambios en estas proyecciones
+            a
+            los accionistas y al público en general? ¿Cuándo fueron hechos públicos estos comunicados? ¿Se nos puede
+            proporcionar copia de estos comunicados?</span>
+          <span class="en">What public announcements have been made informing shareholders and the general public of
+            changes in these projections? When were these announcements made public? Can we be provided with copies of
+            these announcements?</span>
+          <div th:if="${Covid17 != null}" th:text="${Covid17}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 18 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">18.</td>
+        <td class="question-content">
+          <span class="es">¿Su Compañía considera que está cumpliendo con los lineamientos de divulgación de
+            información
+            impuestos por la Comisión del Mercado de Valores de EE.UU. - SEC (si cotizan en alguna bolsa de dicho
+            país)
+            o la Superintendencia del Mercado de Valores - SMV o se necesita implementar alguna modificación para
+            alinearse estos requerimientos? ¿Se está utilizando los servicios de especialistas para asesorar a la
+            Compañía en la regularización de esta situación?</span>
+          <span class="en">Does your Company consider that it is complying with the disclosure guidelines imposed by
+            the
+            U.S. Securities and Exchange Commission (SEC) (if listed on a U.S. stock exchange) or the Superintendencia
+            del Mercado de Valores (SMV) or does it need to implement any modifications to align with these
+            requirements? - Are you using the services of specialists to advise the Company in regularizing this
+            situation?</span>
+          <div th:if="${Covid18 != null}" th:text="${Covid18}"></div>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="content">
+
+    <!-- Question 19 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">19.</td>
+        <td class="question-content">
+          <span class="es">¿La Compañía ha solicitado al SEC y/o SMV según aplique alguna prórroga en el plazo de
+            presentación de los estados financieros auditados?</span>
+          <span class="en">Has the Company applied to the SEC and/or SMV, as applicable, for any extension of the
+            deadline for filing the audited financial statements?</span>
+          <div th:if="${Covid19 != null}" th:text="${Covid19}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 20 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">20.</td>
+        <td class="question-content">
+          <span class="es">Si las acciones o papeles de deuda de la Compañía cotizan en bolsa de valores, ¿se ha
+            contratado los servicios externos para asesorar a su Compañía para redactar los comunicados públicos de
+            divulgación de información?</span>
+          <span class="en">If the Company's stock or debt securities are publicly traded, have outside services been
+            retained to advise your Company in drafting public disclosure communications?</span>
+          <div th:if="${Covid20 != null}" th:text="${Covid20}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Section: Personal -->
+    <div class="section-title">Personal</div>
+
+    <!-- Question 21 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">21.</td>
+        <td class="question-content">
+          <span class="es">¿Se han revisado y actualizado los procedimientos de salud y seguridad ocupacional a la luz
+            del COVID-19?</span>
+          <span class="en">Have occupational health and safety procedures been reviewed and updated in light of
+            COVID-19?</span>
+          <div th:if="${Covid21 != null}" th:text="${Covid21}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 22 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">22.</td>
+        <td class="question-content">
+          <span class="es">¿La mayoría de sus colaboradores trabaja desde casa? Si o no, ¿se les ha proporcionado
+            equipos de protección personal tales como mascarillas y guantes? ¿Se ha implementado la política de
+            distanciamiento social? (es decir que haya una distancia mínima de 2 metros entre personas). ¿La Compañía
+            hace obligatorio a su personal a que asista a trabajar a la oficina cuando no es posible trabajar
+            remotamente desde casa?</span>
+          <span class="en">Do most of your employees work from home? Yes or no, have they been provided with personal
+            protective equipment such as masks and gloves? Has the social distancing policy been implemented (i.e. a
+            minimum distance of 2 meters between people)? Does the Company make it mandatory for your staff to come to
+            work at the office when it is not possible to work remotely from home?</span>
+          <div th:if="${Covid22 != null}" th:text="${Covid22}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 23 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">23.</td>
+        <td class="question-content">
+          <span class="es">¿La Compañía tiene algún plan para reducir operaciones en caso el declive económico
+            continúe
+            teniendo impactos negativos en la Compañía lo que incluye reducción de personal, cierre de oficinas o
+            incluso un plan de paralización de operaciones?</span>
+          <span class="en">Does the Company have any plans to reduce operations in case the economic downturn
+            continues
+            to have negative impacts on the Company, including staff reductions, office closures or even a plan to
+            cease
+            operations?</span>
+          <div th:if="${Covid23 != null}" th:text="${Covid23}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Section: Cyber Risks -->
+    <div class="section-title">Riesgos Cibernéticos</div>
+
+    <!-- Question 24 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">24.</td>
+        <td class="question-content">
+          <span class="es">¿Está la Compañía adecuadamente preparada y en capacidad de acomodar a sus colaboradores
+            para
+            que trabajen remotamente desde casa, particularmente con respecto a las funciones y los controles de los
+            sistemas informáticos de la Compañía?</span>
+          <span class="en">Is the Company adequately prepared and able to accommodate its employees to work remotely
+            from home, particularly with regard to the functions and controls of the Company's IT systems?</span>
+          <div th:if="${Covid24 != null}" th:text="${Covid24}"></div>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="content">
+
+    <!-- Question 25 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">25.</td>
+        <td class="question-content">
+          <span class="es">¿Su Compañía contrata Seguros de Riesgos Cibernéticos (Cyber Risks)?</span>
+          <span class="en">Does your Company take out Cyber Risks Insurance?</span>
+          <div th:if="${Covid25 != null}" th:text="${Covid25}"></div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Question 26 -->
+    <table class="question-table">
+      <tr>
+        <td class="question-number">26.</td>
+        <td class="question-content">
+          <span class="es">¿Qué planes tiene la Compañía para combatir el incremento en la ciber-delincuencia debido
+            al
+            acceso remoto de los colaboradores (si aplica), incluyendo vulneraciones de la seguridad de los sistemas
+            informáticos y filtración de información de la Compañía a través de los dispositivos de acceso remoto de
+            los
+            colaboradores?</span>
+          <span class="en">What plans does the Company have to combat the increase in cyber-crime due to remote access
+            by employees (if applicable), including security breaches of IT systems and leakage of Company information
+            through employees' remote access devices?</span>
+          <div th:if="${Covid26 != null}" th:text="${Covid26}"></div>
+        </td>
+      </tr>
+    </table>
+
+
+
+
+    <!-- Signature Block -->
+    <div class="question">
+      <h5 style="font-size: 9pt;"><em>FIRMADO (SIGNATURE) :____________________________ CARGO (POSITION )</em></h5>
+      <h5 style="font-weight: normal; font-size: 9pt;">(Debe ser firmado por el Presidente o Consejero Delegado de la
+        Sociedad Principal)</h5>
+      <h5 style="font-weight: normal; font-size: 8pt; font-style: italic;">Must be signed by the Chairman of the Board
+        or the Managing Director of the principal company</h5>
+      <h5 style="font-size: 9pt;"><em>LUGAR Y FECHA (PLACE AND DATE):</em></h5>
+    </div>
+
+  </div>
+
+
+</body>
+
+</html>

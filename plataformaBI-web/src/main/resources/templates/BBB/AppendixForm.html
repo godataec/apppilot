@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ANEXO No. 3 - Pregunta 12 del Cuestionario de PI</title>
+    <style>
+        /* Tables for data */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .data-table,
+        .data-table th,
+        .data-table td {
+            border: 1px solid #000;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .data-table th {
+            font-weight: bold;
+        }
+
+        /* Tables for question layout */
+        .question-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 5px 0;
+            border: none;
+            table-layout: fixed;
+        }
+
+        .question-table td {
+            border: none;
+            padding: 0;
+            vertical-align: top;
+        }
+
+        .question-number {
+            font-weight: bold;
+            width: 2em;
+            text-align: left;
+            padding-right: 0.5em;
+        }
+
+        .question-content {
+            width: calc(100% - 2em);
+        }
+
+        /* Tables for literal layout */
+        .literal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            border: none;
+            table-layout: fixed;
+            break-inside: avoid;
+        }
+
+        .literal-table td {
+            border: none;
+            padding: 0;
+            vertical-align: top;
+        }
+
+        .literal-letter {
+            font-weight: bold;
+            width: 1.5em;
+            text-align: left;
+            padding-right: 0.5em;
+        }
+
+        .literal-content {
+            width: calc(100% - 1.5em);
+        }
+
+        body {
+            margin: 0 1cm 0 1cm;
+            padding: 0;
+            font-family: 'Times New Roman', Times, serif;
+            color: #000;
+            background: #ffffff;
+            font-size: 11pt;
+            line-height: 14pt !important;
+        }
+
+        .literals {
+            margin: 0 20pt 0 20pt;
+            padding: 0;
+            font-family: 'Times New Roman', Times, serif;
+            color: #000;
+            font-size: 11pt;
+        }
+
+        .page {
+            min-height: 21.7cm;
+            margin: 0cm auto;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .content {
+            font-size: 10pt;
+            line-height: 14pt;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            box-sizing: border-box;
+            /* So the footer is not overlapped */
+        }
+
+        .content h1 {
+            text-align: center;
+            font-size: 12pt;
+        }
+
+        .content-footer .footer-divider {
+            border: none;
+            height: 4px;
+            width: 80%;
+            background-color: #aaa;
+            margin-bottom: 9pt;
+        }
+
+        /* List styling */
+        ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 3px;
+        }
+
+        /* Yes/No column width */
+        .yes-no {
+            min-height: 60px;
+            width: 120px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="content">
+            <h1>ANEXO No. 3<em style="font-weight: normal;">(Annex 3)</em> </h1>
+            <h1>
+                <strong>Pregunta 12 del Cuestionario de PI</strong>
+                <em style="font-weight: normal;">(Question 12 of PI Proposal Form)</em>
+            </h1>
+        </div>
+
+        <!-- Main question using table layout -->
+        <table class="question-table">
+            <tr>
+                <td class="question-number">12)</td>
+                <td class="question-content">
+                    <strong>Provee facilidades de acceso por Internet.</strong>
+                    <br />
+                    <em>Do you provide an Internet Facility?</em>
+                    <p th:if="${Anexo3pis1p12 != null}" th:text="${Anexo3pis1p12}"></p>
+                </td>
+            </tr>
+        </table>
+
+        <div class="literals">
+            <p th:if="${Anexo3pis1p12 != null}">
+                <strong>Si la respuesta es SI, favor dar detalles de:</strong>
+                <em>(If yes, please give details of:)</em>
+            </p>
+
+            <p th:if="${Anexo3pis1p12normal != null}" th:text="${Anexo3pis1p12normal}"></p>
+
+            <!-- Literal a) using table layout -->
+            <table class="literal-table">
+                <tr>
+                    <td class="literal-letter">a)</td>
+                    <td class="literal-content">
+                        <strong>Servicios ofrecidos</strong>
+                        <em>(Services)</em>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Services table -->
+            <table class="data-table">
+                <tbody>
+                    <tr>
+                        <th><strong>Servicio</strong> (Service)</th>
+                        <th class="yes-no"><strong>SI / YES - NO</strong></th>
+                    </tr>
+                    <tr>
+                        <td><strong>i. Únicamente información de productos?</strong> <em>(Product information
+                                only?)</em></td>
+                        <td class="yes-no" th:utext="${Anexo3pis1p12a1}"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>ii. Balance de las cuentas?</strong> <em>(Account balance?)</em></td>
+                        <td class="yes-no" th:utext="${Anexo3pis1p12a2}"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>iii. Transferencias de cuenta, a cuentas previamente autorizadas.</strong>
+                            <em>(Pre-authorized account to account transfers?)</em>
+                        </td>
+                        <td class="yes-no" th:utext="${Anexo3pis1p12a3}"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>iv. Aplicaciones para préstamos?</strong> <em>(Loan applications?)</em></td>
+                        <td class="yes-no" th:utext="${Anexo3pis1p12a4}"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>v. Aplicaciones interactivas para hipotecas?</strong> <em>(Interactive mortgage
+                                applications?)</em></td>
+                        <td class="yes-no" th:utext="${Anexo3pis1p12a6}"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>vi. Manejo de cuentas empresariales o de negocios?</strong> <em>(Business/Company
+                                account management?)</em></td>
+                        <td class="yes-no" th:utext="${Anexo3pis1p12a7}"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>vii. Productos de Seguros?</strong> <em>(Insurance Products?)</em></td>
+                        <td class="yes-no" th:utext="${Anexo3pis1p12a8}"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>viii. Transacción de acciones - en línea?</strong> <em>(On-line securities
+                                dealing?)</em></td>
+                        <td class="yes-no" th:utext="${Anexo3pis1p12a9}"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>ix. Otros. Favor especificar:</strong> <em>(Other, please specify)</em>
+                            <p th:if="${Anexo3pis1p12a10a != null}" th:text="${Anexo3pis1p12a10a}"></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Literal b) using table layout -->
+            <table class="literal-table">
+                <tr>
+                    <td class="literal-letter">b)</td>
+                    <td class="literal-content">
+                        <strong>Por favor seleccione el método que se utiliza para verificar la identidad de los
+                            usuarios que realizan transacciones vía Internet:</strong>
+                        <br />
+                        <em>(Please select the method used to verify the identify of the users transacting via the
+                            Internet:)</em>
+
+                        <p th:if="${Anexo3pis1p12b != null}" th:text="${Anexo3pis1p12b}"></p>
+                        <p th:if="${Anexo3pis1p12bnormal != null}" th:text="${Anexo3pis1p12bnormal}"></p>
+
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Literal c) using table layout -->
+            <table class="literal-table">
+                <tr>
+                    <td class="literal-letter">c)</td>
+                    <td class="literal-content">
+                        <strong>Por favor seleccione el método que se utiliza para proteger la integridad de cada
+                            transacción:</strong>
+                        <br />
+                        <em>(Please select the method used to protect the integrity of each transaction:)</em>
+
+                        <p th:if="${Anexo3pis1p12c != null}" th:text="${Anexo3pis1p12c}"></p>
+                        <p th:if="${Anexo3pis1p12cnormal != null}" th:text="${Anexo3pis1p12cnormal}"></p>
+
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Literal d) using table layout -->
+            <table class="literal-table">
+                <tr>
+                    <td class="literal-letter">d)</td>
+                    <td class="literal-content">
+                        <strong>Se utiliza un dispositivo de seguimiento para las facilidades en Internet?:</strong>
+                        <br />
+                        <em>(Do you utilize a tracking device in relation to the Internet facilities?)</em>
+                        <p th:if="${Anexo3pis1p12d != null}" th:text="${Anexo3pis1p12d}"></p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Literal e) using table layout -->
+            <table class="literal-table">
+                <tr>
+                    <td class="literal-letter">e)</td>
+                    <td class="literal-content">
+                        <strong>Se tienen condiciones formales para la utilización de su servicio de Internet en las
+                            cuales se especifican las obligaciones y responsabilidades de los usuarios?:</strong>
+                        <br />
+                        <em>(Do you have formal terms and conditions for the use of your Internet service which outlines
+                            the obligations and responsibilities of the users?)</em>
+                        <p th:if="${Anexo3pis1p12e != null}" th:text="${Anexo3pis1p12e}"></p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Literal f) using table layout -->
+            <table class="literal-table">
+                <tr>
+                    <td class="literal-letter">f)</td>
+                    <td class="literal-content">
+                        <strong>Se tienen procedimientos para monitorear a quien se prestan los servicios teniendo en
+                            cuenta los asuntos relacionados con las jurisdicciones de otros países?:</strong>
+                        <br />
+                        <em>(Proposer have procedures in place to monitor to whom their services are provided, taking
+                            into account any jurisdictional or cross border issues?)</em>
+                        <p th:if="${Anexo3pis1p12f != null}" th:text="${Anexo3pis1p12f}"></p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Literal g) using table layout -->
+            <table class="literal-table">
+                <tr>
+                    <td class="literal-letter">g)</td>
+                    <td class="literal-content">
+                        <strong>Utiliza algún programa para la prevención de virus?:</strong>
+                        <br />
+                        <em>(Do you use any anti-virus software?)</em>
+                        <p th:if="${Anexo3pis1p12g != null}" th:text="${Anexo3pis1p12g}"></p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Literal g2-h) using table layout -->
+            <table class="literal-table">
+                <tr>
+                    <td class="literal-letter">h)</td>
+                    <td class="literal-content">
+                        <strong>Si la respuesta es SI, se actualiza este regularmente?:</strong>
+                        <br />
+                        <em>(If "yes", is it upgraded on a regular basis?)</em>
+                        <p th:if="${Anexo3pis1p12g2 != null}" th:text="${Anexo3pis1p12g2}"></p>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</body>
+
+</html>

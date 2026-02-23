@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="FILENAME">C:\logs\transfer-callCenter.log</Property>
+    </Properties>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %p %c{2} [%M] |%L| %m %n"/>
+        </Console>
+        <RollingFile name="FILE" fileName="${FILENAME}" filePattern="${FILENAME}.%d{yyyy-MM-dd}.gz">
+            <PatternLayout>
+                <Pattern>%d %p %c{2} [%M] |%L| %m %n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- avoid duplicated logs with additivity=false -->
+        <Logger name="com.bancointernacional.plataformaBI" level="info" additivity="false">
+            <AppenderRef ref="FILE"/>
+        </Logger>
+        <Root level="error">
+            <AppenderRef ref="CONSOLE"/>
+        </Root>
+    </Loggers>
+</Configuration>

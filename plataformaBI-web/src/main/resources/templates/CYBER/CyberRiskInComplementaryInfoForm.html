@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CYBER RISK INFORMACIÓN COMPLEMENTARIA</title>
+    <style>
+        .footer-enumeration {
+            position: absolute;
+            bottom: 0;
+            right: 10cm;
+            width: auto;
+            height: auto;
+            background: none;
+            font-size: 10pt;
+            font-weight: 300;
+            color: #7a7a7a;
+        }
+
+        /*Image in top center*/
+        @page {
+            size: A4;
+            margin: 3cm 2cm 2cm 2cm;
+
+            @top-center {
+                font-size: 14pt;
+                text-align: left;
+                padding-right: 1cm;
+                margin-top: 0.25cm;
+                color: #000;
+            }
+
+            @bottom-center {
+                content: "Page " counter(page) " of " counter(pages);
+                background: none;
+                font-size: 10pt;
+                font-weight: 300;
+                color: #7a7a7a;
+                text-align: center;
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Calibri', sans-serif;
+            color: #000;
+            background: #ffffff;
+            line-height: 14pt !important;
+        }
+
+        /* Tables for question layout */
+        .question-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 0 14pt 0;
+            border: none;
+            table-layout: fixed;
+        }
+
+        .question-table td {
+            border: none;
+            padding: 0;
+            vertical-align: top;
+        }
+
+        .question-number {
+            font-weight: normal;
+            width: 1.5em;
+            text-align: left;
+            padding-right: 0.5em;
+        }
+
+        .question-content {
+            width: calc(100% - 1.5em);
+        }
+
+        .page {
+            min-height: 23.94cm;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h2,
+        h3 {
+            text-align: center;
+        }
+
+        /* Data tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background-color: #f2f2f2;
+        }
+
+        /* No-border table */
+        .no-border-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        .no-border-table td {
+            border: none;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .yes-no {
+            text-align: center;
+        }
+
+        .content {
+            font-size: 11pt;
+            line-height: 14pt;
+            /* So the footer is not overlapped */
+        }
+
+        /*IMG - LOCKTON*/
+        .header {
+            position: absolute;
+            top: 0cm;
+            font-size: 10pt;
+            text-align: left;
+            height: 1.5cm;
+            width: 4.49cm;
+            opacity: 50%;
+        }
+
+        .es {
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 9pt;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <div class="header">
+            <img src="lockton.jpg" alt="Pie de página Portada" style="width: 4.17cm;" />
+        </div>
+
+
+        <div class=" page">
+
+            <h3>INFORMACIÓN COMPLEMENTARIA</h3>
+            <h3>SOLICITUD DE COTIZACIÓN DEL SEGURO CYBER RISKS</h3>
+            <h3>Asegurado: Banco Internacional</h3>
+
+            <!-- Question 1 using table layout -->
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">1.</td>
+                    <td class="question-content">
+                        <p class="es">Favor proporcionar el número de datos PII almacenados
+                            (Información Personal, Información de Salud e Información Financiera).</p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Data table for question 1 -->
+            <table class="data-table">
+                <tbody>
+                    <tr>
+                        <td colspan="2"><b>Personas Naturales</b></td>
+                    </tr>
+                    <tr>
+                        <td>Creditos</td>
+                        <td class="yes-no" th:text="${Cyberriskcompletes1p1r1}"></td>
+                    </tr>
+                    <tr>
+                        <td>Tarjeta de Credito</td>
+                        <td class="yes-no" th:text="${Cyberriskcompletes1p1r2}"></td>
+                    </tr>
+                    <tr>
+                        <td>Información de Salud</td>
+                        <td class="yes-no" th:text="${Cyberriskcompletes1p1r3}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><b>Persona Juridica</b></td>
+                    </tr>
+                    <tr>
+                        <td>Creditos</td>
+                        <td class="yes-no" th:text="${Cyberriskcompletes1p1r4}"></td>
+                    </tr>
+                    <tr>
+                        <td><b>TOTAL</b></td>
+                        <td class="yes-no" th:text="${Cyberriskcompletes1p1r5}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Question 2 using table layout -->
+            <table class="question-table" style="margin-top: 14pt;">
+                <tr>
+                    <td class="question-number">2.</td>
+                    <td class="question-content">
+                        <p class="es">Favor proporcionar todos los nombres de dominios aplicables al
+                            Banco Internacional que van a estar cubiertas bajo esta póliza.
+                            Tener en cuenta que por "Nombres de Dominios" nos referimos a todos los
+                            nombres de dominio de Internet registrados que se utilizan para comercializar
+                            el negocio, proporcionar información sobre el negocio u operar el negocio.
+                            Si se utilizan varios dominios de países, notifique todos los dominios de
+                            nivel superior relevantes para esa ubicación, por ejemplo, co.uk o co.fr,
+                            etc.</p>
+                        <p th:if="${Cyberriskcompletes1p2}" th:text="${Cyberriskcompletes1p2}"></p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Question 3 using table layout -->
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">3.</td>
+                    <td class="question-content">
+                        <p class="es">Confirmar si el sistema informático del Banco Internacional
+                            está segregado y es independiente a los sistemas de los otros bancos
+                            del Grupo IF.</p>
+                        <p th:if="${Cyberriskcompletes1p3}" th:text="${Cyberriskcompletes1p3}"></p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Question 4 using table layout -->
+            <table class="question-table">
+                <tr>
+                    <td class="question-number">4.</td>
+                    <td class="question-content">
+                        <p class="es">Confirmar que todas las Entidades por asegurarse son 100%
+                            privadas y no controlados por ningún Gobierno o Estado.</p>
+                        <p th:if="${Cyberriskcompletes1p4}" th:text="${Cyberriskcompletes1p4}"></p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Footer information table -->
+            <table class="no-border-table">
+                <tbody>
+                    <tr>
+                        <td style="width: 150px;">Elaborado por:</td>
+                        <td class="yes-no" th:text="${ElaboradoPor}"></td>
+                    </tr>
+                    <tr>
+                        <td>Fuente:</td>
+                        <td class="yes-no" th:text="${Fuente}"></td>
+                    </tr>
+                    <tr>
+                        <td>Fecha de Elaboración:</td>
+                        <td class="yes-no" th:text="${FechaElaboracion}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</body>
+
+</html>

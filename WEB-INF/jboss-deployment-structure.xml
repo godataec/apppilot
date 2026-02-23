@@ -1,0 +1,8 @@
+<jboss-deployment-structure>
+    <deployment>
+        <dependencies>
+            <!-- Agrega el nombre del módulo que necesitas cargar -->
+            <module name="com.bancointernacional.plataformaBI.PlataformaBiApplication" />
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>
