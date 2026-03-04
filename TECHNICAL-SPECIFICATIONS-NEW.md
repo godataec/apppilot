@@ -1,7 +1,7 @@
 # Especificaciones Técnicas — SPS-BI (Sistema de Gestión de Pólizas y Siniestros)
 
 > Plataforma de gestión de pólizas de seguros y siniestros para Banco Internacional.
-> **Stack:** Python 3.11+ · FastAPI · React 18+ · SQL Server · SAML 2.0 / JWT · Docker
+> **Stack:** Python 3.11+ · FastAPI · React 18+ · SQL Server · OIDC (OpenID Connect) / JWT · Docker
 
 ---
 
@@ -24,7 +24,7 @@
 ### 1.1 Diagrama de Arquitectura
 
 ```
-┌──────────────────┐      SAML 2.0       ┌───────────────────────┐      JWT Bearer       ┌──────────────────┐
+┌──────────────────┐   OIDC / OAuth 2.0  ┌───────────────────────┐      JWT Bearer       ┌──────────────────┐
 │   Azure AD /     │◄────────────────────►│   FastAPI Backend     │◄──────────────────────│  React Frontend  │
 │   Entra ID (IdP) │                      │   (Uvicorn + Docker)  │                       │  (Vite + Nginx)  │
 └──────────────────┘                      └──────────┬────────────┘                       └──────────────────┘
@@ -47,7 +47,7 @@
 | **Lenguaje Backend** | Java 8 | **Python 3.11+** |
 | **Framework Backend** | Spring Boot 2.7.18 | **FastAPI 0.110+** |
 | **ORM** | Spring Data JPA + Hibernate | **SQLAlchemy 2.0 + Alembic** (migraciones) |
-| **Autenticación (IdP)** | SAML 2.0 via Azure AD | **SAML 2.0 via Azure AD** (python3-saml / pysaml2) |
+| **Autenticación (IdP)** | SAML 2.0 via Azure AD | **OIDC via Azure AD / Entra ID** (authlib / python-jose) |
 | **Autenticación (API)** | JWT (HS256, JJWT) | **JWT (HS256, python-jose / PyJWT)** |
 | **Mapeo de Datos** | MapStruct + Lombok | **Pydantic v2** (serialización/validación) |
 | **Generación de PDF** | Thymeleaf + openhtmltopdf | **Jinja2 + WeasyPrint** (o xhtml2pdf) |
@@ -121,7 +121,7 @@ backend/
 │   ├── main.py                    # Punto de entrada FastAPI
 │   ├── core/
 │   │   ├── config.py              # Settings (Pydantic BaseSettings)
-│   │   ├── security.py            # JWT, SAML, permisos
+│   │   ├── security.py            # JWT, OIDC, permisos
 │   │   ├── database.py            # Engine SQLAlchemy, SessionLocal
 │   │   └── exceptions.py          # Excepciones globales + handlers
 │   ├── models/                    # Modelos SQLAlchemy (tablas)
@@ -185,7 +185,7 @@ frontend/
 │   │   ├── layout/                # Sidebar, Header, Footer
 │   │   └── shared/                # Componentes reutilizables
 │   ├── features/
-│   │   ├── auth/                  # Login, SAML callback, logout
+│   │   ├── auth/                  # Login, OIDC callback, logout
 │   │   ├── processes/             # CRUD de procesos
 │   │   ├── policies/              # Gestión de pólizas
 │   │   ├── questionnaires/        # Cuestionarios y respuestas
@@ -484,33 +484,53 @@ Dos mecanismos:
 
 ## 4. Flujo de Autenticación y Autorización
 
-### 4.1 Flujo SAML 2.0 + JWT
+### 4.1 Flujo OIDC (OpenID Connect) + JWT
+
+El sistema utiliza **OpenID Connect (OIDC)** con **Azure AD / Entra ID** como proveedor de identidad (IdP). OIDC opera sobre OAuth 2.0 y proporciona un flujo de autenticación basado en tokens (ID Token + Access Token) en lugar de assertions XML (SAML).
+
+**Flujo Authorization Code con PKCE:**
 
 ```
-┌──────────┐   1. Click "Iniciar Sesión"   ┌───────────────┐   2. SAML AuthnRequest   ┌──────────────┐
-│  React   │───────────────────────────────►│   FastAPI      │──────────────────────────►│  Azure AD    │
-│ Frontend │                                │ (python3-saml) │                           │  (IdP)       │
-└──────────┘                                └───────────────┘                           └──────────────┘
-     ▲                                             │                                          │
-     │                                             │                                          │
-     │  6. Bearer JWT en todas                     │   3. Usuario se autentica                │
-     │     las peticiones API                      │      en Azure AD                         │
-     │                                             │                                          │
-     │  5. Redirect a /auth/callback               │   4. SAML Response                       │
-     │     con JWT en query param                  │      + assertions de roles               │
-     │                                             ◄──────────────────────────────────────────┘
+┌──────────┐   1. Click "Iniciar Sesión"   ┌───────────────┐   2. Authorization Request    ┌──────────────┐
+│  React   │───────────────────────────────►│   FastAPI      │───(redirect)──────────────────►│  Azure AD    │
+│ Frontend │                                │  (authlib)     │   + code_challenge (PKCE)     │  (Entra ID)  │
+└──────────┘                                └───────────────┘                                └──────────────┘
+     ▲                                             │                                               │
+     │                                             │                                               │
+     │  7. Bearer JWT en todas                     │   3. Usuario se autentica                     │
+     │     las peticiones API                      │      en Azure AD (login UI)                   │
+     │                                             │                                               │
+     │  6. Redirect a /auth/callback               │   4. Redirect con authorization_code          │
+     │     con JWT de la app                       │      a /api/v1/auth/callback                  │
+     │                                             ◄──────────────────────────────────────────────┘
+     │                                             │
+     │                                             │   5. Token Exchange:
+     │                                             │      POST /oauth2/v2.0/token
+     │                                             │      → code + code_verifier
+     │                                             │      ← id_token + access_token + refresh_token
      │                                             │
      └─────────────────────────────────────────────┘
                                                    │
-                           POST /api/v1/auth/token ──► Genera JWT (HS256, expiración 24h)
+                           POST /api/v1/auth/token ──► Genera JWT interno (HS256, expiración 24h)
                                                        Claims: email, name, roles, sub (user_id)
 ```
+
+**Diferencias clave respecto a SAML:**
+
+| Aspecto | SAML 2.0 (anterior) | OIDC (actual) |
+|---|---|---|
+| Formato de token | XML Assertions | JSON Web Tokens (JWT) |
+| Protocolo base | SAML 2.0 | OAuth 2.0 + OpenID Connect |
+| Flujo | SP-Initiated SSO (POST/Redirect Binding) | Authorization Code Flow + PKCE |
+| Metadatos | XML Metadata | `.well-known/openid-configuration` |
+| Logout | SLO (Single Logout) XML | OIDC RP-Initiated Logout (redirect) |
+| Librería Python | python3-saml / pysaml2 | **authlib** / python-jose |
 
 ### 4.2 Cadenas de Seguridad (Middleware FastAPI)
 
 | Middleware | Orden | Rutas | Método de Auth |
 |---|---|---|---|
-| **SAML** | 1 | `/saml2/**`, `/api/v1/auth/token`, `/api/v1/auth/callback` | SAML 2.0 (Azure AD) |
+| **OIDC** | 1 | `/api/v1/auth/login`, `/api/v1/auth/callback`, `/api/v1/auth/logout` | OIDC (Azure AD / Entra ID) |
 | **JWT** | 2 | `/api/v1/**` | Bearer JWT (HS256) |
 | **Público** | — | `/docs`, `/redoc`, `/openapi.json`, `/health` | Sin autenticación |
 
@@ -548,6 +568,72 @@ def require_roles(*roles: str):
     return role_checker
 ```
 
+**Implementación del flujo OIDC:**
+
+```python
+# app/core/oidc.py
+from authlib.integrations.starlette_client import OAuth
+
+oauth = OAuth()
+oauth.register(
+    name="azure",
+    client_id=settings.OIDC_CLIENT_ID,
+    client_secret=settings.OIDC_CLIENT_SECRET,
+    server_metadata_url=f"https://login.microsoftonline.com/{settings.AZURE_AD_TENANT_ID}/v2.0/.well-known/openid-configuration",
+    client_kwargs={
+        "scope": "openid email profile",
+        "code_challenge_method": "S256",  # PKCE
+    },
+)
+
+# app/api/v1/auth.py
+from app.core.oidc import oauth
+
+@router.get("/login")
+async def login(request: Request):
+    """Inicia el flujo OIDC redirigiendo al IdP de Azure AD."""
+    redirect_uri = settings.OIDC_REDIRECT_URI  # /api/v1/auth/callback
+    return await oauth.azure.authorize_redirect(request, redirect_uri)
+
+@router.get("/callback")
+async def auth_callback(request: Request, db: AsyncSession = Depends(get_db)):
+    """Callback OIDC: intercambia code por tokens, crea/actualiza usuario, emite JWT interno."""
+    token = await oauth.azure.authorize_access_token(request)
+    id_token = token.get("id_token")
+    userinfo = token.get("userinfo") or await oauth.azure.userinfo(token=token)
+
+    # Extraer claims del ID Token
+    email = userinfo["email"]
+    name = userinfo.get("name", "")
+    roles = userinfo.get("roles", [])  # App roles configurados en Azure AD
+
+    # Upsert usuario en BD
+    user = await user_service.verify_and_save(db, email=email, name=name, roles=roles)
+
+    # Generar JWT interno de la aplicación
+    app_jwt = create_access_token(data={
+        "sub": str(user.id),
+        "email": user.email,
+        "name": name,
+        "roles": [user.role],
+    })
+
+    # Redirigir al frontend con el JWT
+    return RedirectResponse(
+        url=f"{settings.FRONTEND_URL}/auth/callback?token={app_jwt}"
+    )
+
+@router.post("/logout")
+async def logout(request: Request):
+    """Inicia OIDC RP-Initiated Logout."""
+    logout_url = (
+        f"https://login.microsoftonline.com/{settings.AZURE_AD_TENANT_ID}"
+        f"/oauth2/v2.0/logout"
+        f"?post_logout_redirect_uri={settings.OIDC_POST_LOGOUT_REDIRECT_URI}"
+    )
+    return {"logout_url": logout_url}
+```
+
 ### 4.3 Reglas de Autorización Basadas en Rutas
 
 | Patrón de Ruta | Roles Permitidos |
@@ -561,41 +647,47 @@ def require_roles(*roles: str):
 | `/api/v1/sinisters/**` (escritura) | SuperAdmin, Admin, SinisterRegisterUser |
 | Resto de `/api/v1/**` | SuperAdmin, Admin, RegisterUser |
 
-### 4.4 Flujo de Logout SAML (SLO)
+### 4.4 Flujo de Logout OIDC (RP-Initiated)
 
-Dos rutas soportadas:
-
-- **SP-iniciado** (`GET /saml/logout?returnTo=`): Construye XML `LogoutRequest`, codifica DEFLATE + Base64, redirige a Azure AD SLO endpoint
-- **IdP-iniciado** (`POST /saml/slo`): Recibe `SAMLRequest`/`SAMLResponse` de Azure AD, invalida sesión
+A diferencia del SLO de SAML (basado en XML), OIDC utiliza un simple redirect al endpoint de logout del IdP:
 
 ```
-Frontend                    Backend                     Azure AD
+Frontend                    Backend                     Azure AD / Entra ID
    │                          │                            │
    │─ POST /api/v1/auth/logout ►│                         │
-   │                          │── retorna {logoutUrl} ──►  │
-   │─ GET /saml/logout ──────►│                            │
-   │                          │── LogoutRequest SAML ────► │
-   │                          │── invalida sesión local    │
-   │◄─── redirect a Azure AD ─┘                           │
+   │                          │── retorna {logout_url} ──► │
+   │◄── {logout_url} ─────────┘                           │
    │                                                       │
-   │────── Azure AD logout UI ───────────────────────────►│
+   │─── redirect a logout_url ───────────────────────────►│
+   │    (https://login.microsoftonline.com/.../logout)    │
    │                                                       │
-   │◄── POST /saml/slo ── LogoutResponse ─────────────────┘
+   │    Azure AD cierra sesión del IdP                    │
    │                                                       │
-   │── redirect a returnTo URL ──►                         │
+   │◄── redirect a post_logout_redirect_uri ──────────────┘
+   │    (frontend /login)                                 │
+   │                                                       │
+   │── limpia JWT local (localStorage) ──►                 │
 ```
 
-### 4.5 Sincronización de Usuarios desde Azure AD
+**Ventajas del logout OIDC vs SAML SLO:**
+- No requiere intercambio de XML LogoutRequest/LogoutResponse
+- No requiere binding DEFLATE + Base64
+- Simple redirect con `post_logout_redirect_uri`
+- Soporta `id_token_hint` para logout silencioso
+
+### 4.5 Sincronización de Usuarios desde Azure AD (Microsoft Graph API)
 
 `POST /api/v1/settings/sync-azure-ad-users` → `AzureADSyncService.synchronize()`
 
-1. Adquiere token OAuth2 vía client credentials flow (scope Microsoft Graph API)
-2. Lee asignaciones de roles de la app → grupos → miembros de grupo
+1. Adquiere token OAuth2 vía **client credentials flow** (scope `https://graph.microsoft.com/.default`) — independiente del flujo OIDC de usuario
+2. Lee asignaciones de roles de la app → grupos → miembros de grupo vía Microsoft Graph API
 3. Mapea roles de Azure AD → roles de la plataforma:
    - `SUPERADMIN` → Super Administrador
    - `ADMIN` → Administrador
    - `USER` → Usuario de Registro
 4. Para cada usuario: upsert vía `UserService.verify_and_save()` (crear si nuevo, actualizar si cambió el nombre, omitir si sin cambios)
+
+> **Nota:** La sincronización usa el mismo `AZURE_AD_CLIENT_ID` y `AZURE_AD_CLIENT_SECRET` que el flujo OIDC, pero con grant_type `client_credentials` en lugar de `authorization_code`.
 
 ### 4.6 Cifrado de Datos de Usuario
 
@@ -615,24 +707,22 @@ Frontend                    Backend                     Azure AD
 
 > Todos los endpoints están bajo el prefijo `/api/v1/`. La documentación interactiva se genera automáticamente en `/docs` (Swagger UI) y `/redoc`.
 
-### 5.1 Autenticación y Seguridad (14 endpoints)
+### 5.1 Autenticación y Seguridad (12 endpoints)
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| `POST` | `/auth/token` | Generar JWT desde sesión SAML |
+| `GET` | `/auth/login` | Inicia flujo OIDC, redirige al IdP de Azure AD / Entra ID |
+| `GET` | `/auth/callback` | Callback OIDC: intercambia authorization_code por tokens, emite JWT interno |
+| `POST` | `/auth/token` | Generar JWT interno desde sesión OIDC autenticada |
+| `POST` | `/auth/refresh` | Refrescar JWT interno usando refresh_token de OIDC |
 | `GET` | `/auth/validate` | Validar token JWT actual |
 | `GET` | `/auth/me` | Obtener info del usuario actual (email, nombre, roles) |
 | `GET` | `/auth/status` | Estado de autenticación |
-| `POST` | `/auth/logout` | Iniciar logout, retorna URL de logout SAML |
+| `POST` | `/auth/logout` | Iniciar logout, retorna URL de logout OIDC (RP-Initiated) |
 | `GET` | `/auth/test` | Probar autenticación JWT (dev) |
 | `GET` | `/auth/admin-test` | Probar acceso SuperAdmin (dev) |
 | `GET` | `/auth/manager-test` | Probar acceso Admin/SuperAdmin (dev) |
 | `GET` | `/auth/profile` | Perfil completo desde claims JWT (dev) |
-| `GET` | `/auth/role-test` | Probar todas las verificaciones de rol (dev) |
-| `GET` | `/saml/logout` | Redirect SLO iniciado por SP |
-| `POST` | `/saml/slo` | Handler de logout iniciado por IdP |
-| `GET` | `/saml/user-info` | Atributos del principal SAML (dev) |
-| `GET` | `/saml/metadata` | URL de metadata del SP |
 
 ### 5.2 Configuración y Usuarios (5 endpoints)
 
@@ -804,7 +894,7 @@ Frontend                    Backend                     Azure AD
 
 | Dominio | Endpoints |
 |---|---|
-| Autenticación y Seguridad | 14 |
+| Autenticación y Seguridad | 12 |
 | Configuración y Usuarios | 5 |
 | Gestión de Procesos | 6 |
 | Acciones de Proceso | 3 |
@@ -819,7 +909,7 @@ Frontend                    Backend                     Azure AD
 | Email | 2 |
 | Siniestros | 10 |
 | Proveedores | 6 |
-| **Total (nueva arquitectura)** | **~111** |
+| **Total (nueva arquitectura)** | **~109** |
 
 ---
 
@@ -1047,14 +1137,14 @@ app.add_middleware(
 | `JWT_EXPIRATION_HOURS` | Horas de validez del token (default: 24) |
 | `ENCRYPTION_KEY` | Clave AES para cifrado de PII de usuarios |
 | `CORS_ALLOWED_ORIGINS` | Orígenes CORS separados por coma |
-| `SAML_ENTITY_ID` | Entity ID del Service Provider |
-| `SAML_ACS_URL` | URL de Assertion Consumer Service |
-| `SAML_SLO_URL` | URL de Single Logout |
-| `SAML_IDP_METADATA_URL` | URL de metadata de Azure AD |
+| `OIDC_CLIENT_ID` | Client ID de la app registrada en Azure AD / Entra ID |
+| `OIDC_CLIENT_SECRET` | Client Secret de la app registrada en Azure AD / Entra ID |
+| `OIDC_REDIRECT_URI` | URL de callback OIDC (default: `http://localhost:8000/api/v1/auth/callback`) |
+| `OIDC_POST_LOGOUT_REDIRECT_URI` | URL de redirección post-logout (default: `http://localhost:5173/login`) |
 | `AZURE_AD_TENANT_ID` | Tenant ID de Azure AD |
 | `AZURE_AD_CLIENT_ID` | Client ID para Graph API |
 | `AZURE_AD_CLIENT_SECRET` | Client Secret para Graph API |
-| `SAML_SUCCESS_REDIRECT_URL` | Redirect post-SAML al frontend (default: `http://localhost:5173/auth/callback`) |
+| `FRONTEND_URL` | URL base del frontend (default: `http://localhost:5173`) |
 | `SMTP_HOST` | Servidor SMTP |
 | `SMTP_PORT` | Puerto SMTP (default: 587) |
 | `SMTP_USER` | Usuario SMTP |
@@ -1073,7 +1163,7 @@ app.add_middleware(
 | `app/core/config.py` | `Settings(BaseSettings)` — carga todas las variables de entorno con validación Pydantic |
 | `app/core/database.py` | Engine SQLAlchemy async, `SessionLocal`, dependency `get_db()` |
 | `app/core/security.py` | JWT encode/decode, dependencias de auth, verificación de roles |
-| `app/core/saml.py` | Configuración python3-saml, handlers SAML |
+| `app/core/oidc.py` | Configuración OIDC (authlib OAuth client), handlers de login/callback/logout |
 | `app/core/exceptions.py` | Exception handlers globales |
 | `app/core/audit_middleware.py` | Middleware de auditoría automática |
 | `app/tasks/celery_app.py` | Configuración Celery + Beat schedule |
@@ -1170,6 +1260,7 @@ class UserRole(str, Enum):
 | `application.properties` | Pydantic `BaseSettings` + `.env` file |
 | `GlobalExceptionHandler` (`@RestControllerAdvice`) | `app.add_exception_handler()` |
 | `SpringSecurityConfig` (filter chains) | Middleware FastAPI + `Depends()` |
+| SAML 2.0 (python3-saml / pysaml2) | **OIDC** (authlib + python-jose) — Authorization Code Flow + PKCE |
 | `Thymeleaf` + `openhtmltopdf` | `Jinja2` + `WeasyPrint` |
 | `WAR/EAR` en JBoss EAP | Contenedor Docker con Uvicorn |
 | `Log4j2` | `loguru` o `structlog` |
